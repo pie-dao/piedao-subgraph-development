@@ -1,0 +1,41 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Staking
+    network: rinkeby
+    source:
+      address: "0xbcfe1ED6E9e933D06685d2aF9CB44378Be94c92D"
+      abi: Staking
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - BoostedToMax
+        - Deposited
+        - Ejected
+        - MinLockAmountChanged
+        - OwnershipTransferred
+        - WhitelistedChanged
+        - Withdrawn
+      abis:
+        - name: Staking
+          file: ./abis/Staking.json
+      eventHandlers:
+        - event: BoostedToMax(uint256,indexed address)
+          handler: handleBoostedToMax
+        - event: Deposited(uint256,uint32,indexed address)
+          handler: handleDeposited
+        - event: Ejected(uint256,indexed address)
+          handler: handleEjected
+        - event: MinLockAmountChanged(uint256)
+          handler: handleMinLockAmountChanged
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: WhitelistedChanged(indexed address,indexed bool)
+          handler: handleWhitelistedChanged
+        - event: Withdrawn(uint256,indexed address)
+          handler: handleWithdrawn
+      file: ./src/mapping.ts
