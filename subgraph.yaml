@@ -6,8 +6,9 @@ dataSources:
     name: Staking
     network: rinkeby
     source:
-      address: "0xbcfe1ED6E9e933D06685d2aF9CB44378Be94c92D"
+      address: "0xcc798c02C8D207AA309137C387db5195AAB7dDCd"
       abi: Staking
+      startBlock: 8779100
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt, BigDecimal } from "@graphprotocol/graph-ts"
 import {
   Staking,
   BoostedToMax,
@@ -9,7 +9,8 @@ import {
   WhitelistedChanged,
   Withdrawn
 } from "../generated/Staking/Staking"
-import { ExampleEntity } from "../generated/schema"
+import { ExampleEntity, Foobar } from "../generated/schema"
+
 
 export function handleBoostedToMax(event: BoostedToMax): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -66,7 +67,23 @@ export function handleBoostedToMax(event: BoostedToMax): void {
   // - contract.whitelisted(...)
 }
 
-export function handleDeposited(event: Deposited): void {}
+export function handleDeposited(event: Deposited): void {
+  // Entities can be loaded from the store using a string ID; this ID
+  // needs to be unique across all entities of the same type
+  let entity = Foobar.load(event.transaction.from.toHex())
+
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (entity == null) {
+    entity = new Foobar(event.transaction.from.toHex())
+  }
+
+  entity.coin = "DOUGH";
+  entity.usdValue = BigDecimal.fromString("1.5");
+
+  // Entities can be written to the store with `.save()`
+  entity.save();  
+}
 
 export function handleEjected(event: Ejected): void {}
 

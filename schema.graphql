@@ -4,3 +4,9 @@ type ExampleEntity @entity {
   amount: BigInt! # uint256
   owner: Bytes! # address
 }
+
+type Foobar @entity {
+  id: ID!
+  coin: String!
+  usdValue: BigDecimal!
+}
