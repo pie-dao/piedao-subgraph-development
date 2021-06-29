@@ -1,4 +1,4 @@
-import { BigInt, BigDecimal, log } from "@graphprotocol/graph-ts"
+import { BigInt, BigDecimal, log, json } from "@graphprotocol/graph-ts"
 import {
   SharesTimeLock,
   BoostedToMax,
@@ -9,25 +9,33 @@ import {
   WhitelistedChanged,
   Withdrawn
 } from "../generated/SharesTimeLock/SharesTimeLock"
-import { Lock, Stat } from "../generated/schema"
+import { Lock, Account, Stat } from "../generated/schema"
 
 const UNIQUE_STAT_ID = "unique_stats_id";
 
 export function handleDeposited(event: Deposited): void {
-  log.debug('handleDeposited: {}', [event.block.number.toString()]);
+  // loading account entity, or creating if it doesn't exist yet...
+  let account = Account.load(event.transaction.from.toHex());
+
+  if (account == null) {
+    account = new Account(event.transaction.from.toHex());
+    account.save();
+  }
 
   // loading lock entity, or creating if it doesn't exist yet...
-  let lock = Lock.load(event.transaction.hash.toHex())
+  let lock = Lock.load(event.transaction.hash.toHex());
 
   if (lock == null) {
-    lock = new Lock(event.transaction.hash.toHex())
+    lock = new Lock(event.transaction.hash.toHex());
   }
 
   // filling the lock entity...
+  lock.lockId = BigInt.fromI32(0); // TODO: change me, this should be an event.params value...
   lock.lockDuration = event.params.lockDuration;
   lock.lockedAt = event.block.timestamp;
   lock.amount = event.params.amount;
-  lock.receiver = event.params.owner;
+  lock.account = account.id;
+  lock.withdrawn = false;
 
   // saving lock entity...
   lock.save();

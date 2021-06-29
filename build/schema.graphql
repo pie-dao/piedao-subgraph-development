@@ -3,10 +3,17 @@ type Stat @entity {
   locksCounter: BigInt!
 }
 
+type Account @entity {
+  id: ID!
+  locks: [Lock!]! @derivedFrom(field: "account")
+}
+
 type Lock @entity {
   id: ID!
+  lockId: BigInt!
   lockDuration: BigInt!
   lockedAt: BigInt!
   amount: BigInt!
-  receiver: Bytes!
+  account: Account!
+  withdrawn: Boolean!
 }

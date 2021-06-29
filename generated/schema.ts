@@ -52,6 +52,46 @@ export class Stat extends Entity {
   }
 }
 
+export class Account extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Account entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Account entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Account", id.toString(), this);
+  }
+
+  static load(id: string): Account | null {
+    return store.get("Account", id) as Account | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get locks(): Array<string> {
+    let value = this.get("locks");
+    return value.toStringArray();
+  }
+
+  set locks(value: Array<string>) {
+    this.set("locks", Value.fromStringArray(value));
+  }
+}
+
 export class Lock extends Entity {
   constructor(id: string) {
     super();
@@ -82,6 +122,15 @@ export class Lock extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get lockId(): BigInt {
+    let value = this.get("lockId");
+    return value.toBigInt();
+  }
+
+  set lockId(value: BigInt) {
+    this.set("lockId", Value.fromBigInt(value));
+  }
+
   get lockDuration(): BigInt {
     let value = this.get("lockDuration");
     return value.toBigInt();
@@ -109,12 +158,21 @@ export class Lock extends Entity {
     this.set("amount", Value.fromBigInt(value));
   }
 
-  get receiver(): Bytes {
-    let value = this.get("receiver");
-    return value.toBytes();
+  get account(): string {
+    let value = this.get("account");
+    return value.toString();
   }
 
-  set receiver(value: Bytes) {
-    this.set("receiver", Value.fromBytes(value));
+  set account(value: string) {
+    this.set("account", Value.fromString(value));
+  }
+
+  get withdrawn(): boolean {
+    let value = this.get("withdrawn");
+    return value.toBoolean();
+  }
+
+  set withdrawn(value: boolean) {
+    this.set("withdrawn", Value.fromBoolean(value));
   }
 }

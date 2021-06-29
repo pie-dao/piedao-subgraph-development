@@ -39,4 +39,4 @@ dataSources:
           handler: handleWhitelistedChanged
         - event: Withdrawn(uint256,indexed address)
           handler: handleWithdrawn
-      file: ./src/mapping.ts
+      file: ./src/SharesTimeLock.ts
