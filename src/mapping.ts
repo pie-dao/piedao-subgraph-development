@@ -1,6 +1,6 @@
 import { BigInt, BigDecimal, log } from "@graphprotocol/graph-ts"
 import {
-  Staking,
+  SharesTimeLock,
   BoostedToMax,
   Deposited,
   Ejected,
@@ -8,7 +8,7 @@ import {
   OwnershipTransferred,
   WhitelistedChanged,
   Withdrawn
-} from "../generated/Staking/Staking"
+} from "../generated/SharesTimeLock/SharesTimeLock"
 import { Lock } from "../generated/schema"
 
 export function handleDeposited(event: Deposited): void {

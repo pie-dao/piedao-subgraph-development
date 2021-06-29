@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: SharesTimeLock
@@ -23,7 +23,7 @@ dataSources:
         - Withdrawn
       abis:
         - name: SharesTimeLock
-          file: ./abis/SharesTimeLock.json
+          file: SharesTimeLock/abis/SharesTimeLock.json
       eventHandlers:
         - event: BoostedToMax(uint256,indexed address)
           handler: handleBoostedToMax
@@ -39,4 +39,4 @@ dataSources:
           handler: handleWhitelistedChanged
         - event: Withdrawn(uint256,indexed address)
           handler: handleWithdrawn
-      file: ./src/mapping.ts
+      file: SharesTimeLock/SharesTimeLock.wasm

@@ -164,7 +164,7 @@ export class Withdrawn__Params {
   }
 }
 
-export class Staking__getStakingDataResultDataStruct extends ethereum.Tuple {
+export class SharesTimeLock__getStakingDataResultDataStruct extends ethereum.Tuple {
   get totalStaked(): BigInt {
     return this[0].toBigInt();
   }
@@ -194,15 +194,15 @@ export class Staking__getStakingDataResultDataStruct extends ethereum.Tuple {
   }
 
   get accountLocks(): Array<
-    Staking__getStakingDataResultDataAccountLocksStruct
+    SharesTimeLock__getStakingDataResultDataAccountLocksStruct
   > {
     return this[7].toTupleArray<
-      Staking__getStakingDataResultDataAccountLocksStruct
+      SharesTimeLock__getStakingDataResultDataAccountLocksStruct
     >();
   }
 }
 
-export class Staking__getStakingDataResultDataAccountLocksStruct extends ethereum.Tuple {
+export class SharesTimeLock__getStakingDataResultDataAccountLocksStruct extends ethereum.Tuple {
   get amount(): BigInt {
     return this[0].toBigInt();
   }
@@ -216,7 +216,7 @@ export class Staking__getStakingDataResultDataAccountLocksStruct extends ethereu
   }
 }
 
-export class Staking__locksOfResult {
+export class SharesTimeLock__locksOfResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -236,9 +236,9 @@ export class Staking__locksOfResult {
   }
 }
 
-export class Staking extends ethereum.SmartContract {
-  static bind(address: Address): Staking {
-    return new Staking("Staking", address);
+export class SharesTimeLock extends ethereum.SmartContract {
+  static bind(address: Address): SharesTimeLock {
+    return new SharesTimeLock("SharesTimeLock", address);
   }
 
   canEject(account: Address, lockId: BigInt): boolean {
@@ -323,19 +323,21 @@ export class Staking extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getStakingData(account: Address): Staking__getStakingDataResultDataStruct {
+  getStakingData(
+    account: Address
+  ): SharesTimeLock__getStakingDataResultDataStruct {
     let result = super.call(
       "getStakingData",
       "getStakingData(address):((uint256,uint256,uint256,uint256,uint256,uint256,uint256,(uint256,uint32,uint32)[]))",
       [ethereum.Value.fromAddress(account)]
     );
 
-    return result[0].toTuple() as Staking__getStakingDataResultDataStruct;
+    return result[0].toTuple() as SharesTimeLock__getStakingDataResultDataStruct;
   }
 
   try_getStakingData(
     account: Address
-  ): ethereum.CallResult<Staking__getStakingDataResultDataStruct> {
+  ): ethereum.CallResult<SharesTimeLock__getStakingDataResultDataStruct> {
     let result = super.tryCall(
       "getStakingData",
       "getStakingData(address):((uint256,uint256,uint256,uint256,uint256,uint256,uint256,(uint256,uint32,uint32)[]))",
@@ -346,11 +348,11 @@ export class Staking extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      value[0].toTuple() as Staking__getStakingDataResultDataStruct
+      value[0].toTuple() as SharesTimeLock__getStakingDataResultDataStruct
     );
   }
 
-  locksOf(param0: Address, param1: BigInt): Staking__locksOfResult {
+  locksOf(param0: Address, param1: BigInt): SharesTimeLock__locksOfResult {
     let result = super.call(
       "locksOf",
       "locksOf(address,uint256):(uint256,uint32,uint32)",
@@ -360,7 +362,7 @@ export class Staking extends ethereum.SmartContract {
       ]
     );
 
-    return new Staking__locksOfResult(
+    return new SharesTimeLock__locksOfResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt()
@@ -370,7 +372,7 @@ export class Staking extends ethereum.SmartContract {
   try_locksOf(
     param0: Address,
     param1: BigInt
-  ): ethereum.CallResult<Staking__locksOfResult> {
+  ): ethereum.CallResult<SharesTimeLock__locksOfResult> {
     let result = super.tryCall(
       "locksOf",
       "locksOf(address,uint256):(uint256,uint32,uint32)",
@@ -384,7 +386,7 @@ export class Staking extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new Staking__locksOfResult(
+      new SharesTimeLock__locksOfResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt()
