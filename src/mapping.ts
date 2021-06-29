@@ -1,4 +1,4 @@
-import { BigInt, BigDecimal } from "@graphprotocol/graph-ts"
+import { BigInt, BigDecimal, log } from "@graphprotocol/graph-ts"
 import {
   Staking,
   BoostedToMax,
@@ -9,33 +9,30 @@ import {
   WhitelistedChanged,
   Withdrawn
 } from "../generated/Staking/Staking"
-import { ExampleEntity, Foobar } from "../generated/schema"
+import { Lock } from "../generated/schema"
 
+export function handleDeposited(event: Deposited): void {
+  log.debug('handleDeposited: {}', [event.block.number.toString()]);
 
-export function handleBoostedToMax(event: BoostedToMax): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+  let entity = Lock.load(event.transaction.hash.toHex())
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
-
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+    entity = new Lock(event.transaction.hash.toHex())
   }
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.amount = event.params.amount
-  entity.owner = event.params.owner
+  entity.lockDuration = event.params.lockDuration;
+  entity.amount = event.params.amount;
+  entity.receiver = event.params.owner;
 
   // Entities can be written to the store with `.save()`
-  entity.save()
+  entity.save();  
+}
 
+export function handleBoostedToMax(event: BoostedToMax): void {
   // Note: If a handler doesn't require existing field values, it is faster
   // _not_ to load the entity from the store. Instead, create it fresh with
   // `new Entity(...)`, set the fields that should be updated and save the
@@ -65,24 +62,6 @@ export function handleBoostedToMax(event: BoostedToMax): void {
   // - contract.rewardsToken(...)
   // - contract.secPerMonth(...)
   // - contract.whitelisted(...)
-}
-
-export function handleDeposited(event: Deposited): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = Foobar.load(event.transaction.from.toHex())
-
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (entity == null) {
-    entity = new Foobar(event.transaction.from.toHex())
-  }
-
-  entity.coin = "DOUGH";
-  entity.usdValue = BigDecimal.fromString("1.5");
-
-  // Entities can be written to the store with `.save()`
-  entity.save();  
 }
 
 export function handleEjected(event: Ejected): void {}

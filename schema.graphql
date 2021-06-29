@@ -1,12 +1,6 @@
-type ExampleEntity @entity {
+type Lock @entity {
   id: ID!
-  count: BigInt!
-  amount: BigInt! # uint256
-  owner: Bytes! # address
-}
-
-type Foobar @entity {
-  id: ID!
-  coin: String!
-  usdValue: BigDecimal!
+  lockDuration: BigInt!
+  amount: BigInt!
+  receiver: Bytes!
 }
