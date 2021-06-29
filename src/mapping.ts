@@ -9,28 +9,41 @@ import {
   WhitelistedChanged,
   Withdrawn
 } from "../generated/SharesTimeLock/SharesTimeLock"
-import { Lock } from "../generated/schema"
+import { Lock, Stat } from "../generated/schema"
+
+const UNIQUE_STAT_ID = "unique_stats_id";
 
 export function handleDeposited(event: Deposited): void {
   log.debug('handleDeposited: {}', [event.block.number.toString()]);
 
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = Lock.load(event.transaction.hash.toHex())
+  // loading lock entity, or creating if it doesn't exist yet...
+  let lock = Lock.load(event.transaction.hash.toHex())
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (entity == null) {
-    entity = new Lock(event.transaction.hash.toHex())
+  if (lock == null) {
+    lock = new Lock(event.transaction.hash.toHex())
   }
 
-  entity.lockDuration = event.params.lockDuration;
-  entity.lockedAt = event.block.timestamp;
-  entity.amount = event.params.amount;
-  entity.receiver = event.params.owner;
+  // filling the lock entity...
+  lock.lockDuration = event.params.lockDuration;
+  lock.lockedAt = event.block.timestamp;
+  lock.amount = event.params.amount;
+  lock.receiver = event.params.owner;
 
-  // Entities can be written to the store with `.save()`
-  entity.save();  
+  // saving lock entity...
+  lock.save();
+
+  // loading stats entity, or creating if it doesn't exist yet...
+  let stats = Stat.load(UNIQUE_STAT_ID);
+  
+  if (stats == null) {
+    stats = new Stat(UNIQUE_STAT_ID);
+    stats.locksCounter = BigInt.fromI32(1);
+  } else {
+    stats.locksCounter = stats.locksCounter.plus(BigInt.fromI32(1));
+  }
+
+  // saving stats entity...
+  stats.save();
 }
 
 export function handleBoostedToMax(event: BoostedToMax): void {
@@ -65,12 +78,12 @@ export function handleBoostedToMax(event: BoostedToMax): void {
   // - contract.whitelisted(...)
 }
 
-export function handleEjected(event: Ejected): void {}
+export function handleEjected(event: Ejected): void { }
 
-export function handleMinLockAmountChanged(event: MinLockAmountChanged): void {}
+export function handleMinLockAmountChanged(event: MinLockAmountChanged): void { }
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+export function handleOwnershipTransferred(event: OwnershipTransferred): void { }
 
-export function handleWhitelistedChanged(event: WhitelistedChanged): void {}
+export function handleWhitelistedChanged(event: WhitelistedChanged): void { }
 
-export function handleWithdrawn(event: Withdrawn): void {}
+export function handleWithdrawn(event: Withdrawn): void { }

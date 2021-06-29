@@ -1,3 +1,8 @@
+type Stat @entity {
+  id: ID!,
+  locksCounter: BigInt!
+}
+
 type Lock @entity {
   id: ID!
   lockDuration: BigInt!
