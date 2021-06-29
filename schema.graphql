@@ -1,6 +1,7 @@
 type Lock @entity {
   id: ID!
   lockDuration: BigInt!
+  lockedAt: BigInt!
   amount: BigInt!
   receiver: Bytes!
 }

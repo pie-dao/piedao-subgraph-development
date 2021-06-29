@@ -51,6 +51,15 @@ export class Lock extends Entity {
     this.set("lockDuration", Value.fromBigInt(value));
   }
 
+  get lockedAt(): BigInt {
+    let value = this.get("lockedAt");
+    return value.toBigInt();
+  }
+
+  set lockedAt(value: BigInt) {
+    this.set("lockedAt", Value.fromBigInt(value));
+  }
+
   get amount(): BigInt {
     let value = this.get("amount");
     return value.toBigInt();

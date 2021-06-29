@@ -25,6 +25,7 @@ export function handleDeposited(event: Deposited): void {
   }
 
   entity.lockDuration = event.params.lockDuration;
+  entity.lockedAt = event.block.timestamp;
   entity.amount = event.params.amount;
   entity.receiver = event.params.owner;
 
