@@ -90,6 +90,69 @@ export class Account extends Entity {
   set locks(value: Array<string>) {
     this.set("locks", Value.fromStringArray(value));
   }
+
+  get totalStaked(): BigInt {
+    let value = this.get("totalStaked");
+    return value.toBigInt();
+  }
+
+  set totalStaked(value: BigInt) {
+    this.set("totalStaked", Value.fromBigInt(value));
+  }
+
+  get rewardTokenTotalSupply(): BigInt {
+    let value = this.get("rewardTokenTotalSupply");
+    return value.toBigInt();
+  }
+
+  set rewardTokenTotalSupply(value: BigInt) {
+    this.set("rewardTokenTotalSupply", Value.fromBigInt(value));
+  }
+
+  get accountRewardTokenBalance(): BigInt {
+    let value = this.get("accountRewardTokenBalance");
+    return value.toBigInt();
+  }
+
+  set accountRewardTokenBalance(value: BigInt) {
+    this.set("accountRewardTokenBalance", Value.fromBigInt(value));
+  }
+
+  get accountWithdrawableRewards(): BigInt {
+    let value = this.get("accountWithdrawableRewards");
+    return value.toBigInt();
+  }
+
+  set accountWithdrawableRewards(value: BigInt) {
+    this.set("accountWithdrawableRewards", Value.fromBigInt(value));
+  }
+
+  get accountWithdrawnRewards(): BigInt {
+    let value = this.get("accountWithdrawnRewards");
+    return value.toBigInt();
+  }
+
+  set accountWithdrawnRewards(value: BigInt) {
+    this.set("accountWithdrawnRewards", Value.fromBigInt(value));
+  }
+
+  get accountDepositTokenBalance(): BigInt {
+    let value = this.get("accountDepositTokenBalance");
+    return value.toBigInt();
+  }
+
+  set accountDepositTokenBalance(value: BigInt) {
+    this.set("accountDepositTokenBalance", Value.fromBigInt(value));
+  }
+
+  get accountDepositTokenAllowance(): BigInt {
+    let value = this.get("accountDepositTokenAllowance");
+    return value.toBigInt();
+  }
+
+  set accountDepositTokenAllowance(value: BigInt) {
+    this.set("accountDepositTokenAllowance", Value.fromBigInt(value));
+  }
 }
 
 export class Lock extends Entity {

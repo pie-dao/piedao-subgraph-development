@@ -14,13 +14,25 @@ import { Lock, Account, Stat } from "../generated/schema"
 const UNIQUE_STAT_ID = "unique_stats_id";
 
 export function handleDeposited(event: Deposited): void {
+  let sharesTimeLock = SharesTimeLock.bind(event.address)
+  let stakingData = sharesTimeLock.getStakingData(event.transaction.from);
+  log.info("stakingData", ["here", stakingData.rewardTokenTotalSupply.toString()]);
+
   // loading account entity, or creating if it doesn't exist yet...
   let account = Account.load(event.transaction.from.toHex());
 
   if (account == null) {
     account = new Account(event.transaction.from.toHex());
-    account.save();
   }
+
+  account.totalStaked = stakingData.totalStaked;
+  account.rewardTokenTotalSupply = stakingData.rewardTokenTotalSupply;
+  account.accountRewardTokenBalance = stakingData.accountRewardTokenBalance;
+  account.accountWithdrawableRewards = stakingData.accountWithdrawableRewards;
+  account.accountWithdrawnRewards = stakingData.accountWithdrawnRewards;
+  account.accountDepositTokenBalance = stakingData.accountDepositTokenBalance;
+  account.accountDepositTokenAllowance = stakingData.accountDepositTokenAllowance;
+  account.save();
 
   // loading lock entity, or creating if it doesn't exist yet...
   let lock = Lock.load(event.transaction.hash.toHex());

@@ -6,6 +6,13 @@ type Stat @entity {
 type Account @entity {
   id: ID!
   locks: [Lock!]! @derivedFrom(field: "account")
+  totalStaked: BigInt!
+  rewardTokenTotalSupply: BigInt!
+  accountRewardTokenBalance: BigInt!
+  accountWithdrawableRewards: BigInt!
+  accountWithdrawnRewards: BigInt!
+  accountDepositTokenBalance: BigInt!
+  accountDepositTokenAllowance: BigInt!
 }
 
 type Lock @entity {
