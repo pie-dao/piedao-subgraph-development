@@ -23,12 +23,16 @@ export class BoostedToMax__Params {
     this._event = event;
   }
 
-  get amount(): BigInt {
+  get lockId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
   get owner(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -45,16 +49,20 @@ export class Deposited__Params {
     this._event = event;
   }
 
-  get amount(): BigInt {
+  get lockId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get lockDuration(): BigInt {
+  get amount(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 
+  get lockDuration(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
   get owner(): Address {
-    return this._event.parameters[2].value.toAddress();
+    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -71,12 +79,16 @@ export class Ejected__Params {
     this._event = event;
   }
 
-  get amount(): BigInt {
+  get lockId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
   get owner(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -155,12 +167,16 @@ export class Withdrawn__Params {
     this._event = event;
   }
 
-  get amount(): BigInt {
+  get lockId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
   get owner(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -169,11 +185,11 @@ export class SharesTimeLock__getStakingDataResultDataStruct extends ethereum.Tup
     return this[0].toBigInt();
   }
 
-  get rewardTokenTotalSupply(): BigInt {
+  get veTokenTotalSupply(): BigInt {
     return this[1].toBigInt();
   }
 
-  get accountRewardTokenBalance(): BigInt {
+  get accountVeTokenBalance(): BigInt {
     return this[2].toBigInt();
   }
 

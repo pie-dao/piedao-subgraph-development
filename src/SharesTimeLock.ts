@@ -9,30 +9,29 @@ import {
   WhitelistedChanged,
   Withdrawn
 } from "../generated/SharesTimeLock/SharesTimeLock"
-import { Lock, Account, Stat } from "../generated/schema"
+import { Lock, Staker, Stat } from "../generated/schema"
 
 const UNIQUE_STAT_ID = "unique_stats_id";
 
 export function handleDeposited(event: Deposited): void {
   let sharesTimeLock = SharesTimeLock.bind(event.address)
   let stakingData = sharesTimeLock.getStakingData(event.transaction.from);
-  log.info("stakingData", ["here", stakingData.rewardTokenTotalSupply.toString()]);
 
-  // loading account entity, or creating if it doesn't exist yet...
-  let account = Account.load(event.transaction.from.toHex());
+  // loading staker entity, or creating if it doesn't exist yet...
+  let staker = Staker.load(event.transaction.from.toHex());
 
-  if (account == null) {
-    account = new Account(event.transaction.from.toHex());
+  if (staker == null) {
+    staker = new Staker(event.transaction.from.toHex());
   }
 
-  account.totalStaked = stakingData.totalStaked;
-  account.rewardTokenTotalSupply = stakingData.rewardTokenTotalSupply;
-  account.accountRewardTokenBalance = stakingData.accountRewardTokenBalance;
-  account.accountWithdrawableRewards = stakingData.accountWithdrawableRewards;
-  account.accountWithdrawnRewards = stakingData.accountWithdrawnRewards;
-  account.accountDepositTokenBalance = stakingData.accountDepositTokenBalance;
-  account.accountDepositTokenAllowance = stakingData.accountDepositTokenAllowance;
-  account.save();
+  staker.totalStaked = stakingData.totalStaked;
+  staker.veTokenTotalSupply = stakingData.veTokenTotalSupply;
+  staker.accountVeTokenBalance = stakingData.accountVeTokenBalance;
+  staker.accountWithdrawableRewards = stakingData.accountWithdrawableRewards;
+  staker.accountWithdrawnRewards = stakingData.accountWithdrawnRewards;
+  staker.accountDepositTokenBalance = stakingData.accountDepositTokenBalance;
+  staker.accountDepositTokenAllowance = stakingData.accountDepositTokenAllowance;
+  staker.save();
 
   // loading lock entity, or creating if it doesn't exist yet...
   let lock = Lock.load(event.transaction.hash.toHex());
@@ -46,7 +45,7 @@ export function handleDeposited(event: Deposited): void {
   lock.lockDuration = event.params.lockDuration;
   lock.lockedAt = event.block.timestamp;
   lock.amount = event.params.amount;
-  lock.account = account.id;
+  lock.staker = staker.id;
   lock.withdrawn = false;
 
   // saving lock entity...
@@ -66,37 +65,7 @@ export function handleDeposited(event: Deposited): void {
   stats.save();
 }
 
-export function handleBoostedToMax(event: BoostedToMax): void {
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.canEject(...)
-  // - contract.depositToken(...)
-  // - contract.getLocksOfLength(...)
-  // - contract.getRewardsMultiplier(...)
-  // - contract.getStakingData(...)
-  // - contract.locksOf(...)
-  // - contract.maxLockDuration(...)
-  // - contract.maxRatioArray(...)
-  // - contract.minLockAmount(...)
-  // - contract.minLockDuration(...)
-  // - contract.owner(...)
-  // - contract.rewardsToken(...)
-  // - contract.secPerMonth(...)
-  // - contract.whitelisted(...)
-}
+export function handleBoostedToMax(event: BoostedToMax): void { }
 
 export function handleEjected(event: Ejected): void { }
 

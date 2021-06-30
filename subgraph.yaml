@@ -6,7 +6,7 @@ dataSources:
     name: SharesTimeLock
     network: rinkeby
     source:
-      address: "0xcc798c02C8D207AA309137C387db5195AAB7dDCd"
+      address: "0xff6D2c7DD1B265C7d69319236eFbdEDdd8964Bc9"
       abi: SharesTimeLock
       startBlock: 8779100
     mapping:
@@ -25,11 +25,11 @@ dataSources:
         - name: SharesTimeLock
           file: ./abis/SharesTimeLock.json
       eventHandlers:
-        - event: BoostedToMax(uint256,indexed address)
+        - event: BoostedToMax(indexed uint256,uint256,indexed address)
           handler: handleBoostedToMax
-        - event: Deposited(uint256,uint32,indexed address)
+        - event: Deposited(indexed uint256,uint256,uint32,indexed address)
           handler: handleDeposited
-        - event: Ejected(uint256,indexed address)
+        - event: Ejected(indexed uint256,uint256,indexed address)
           handler: handleEjected
         - event: MinLockAmountChanged(uint256)
           handler: handleMinLockAmountChanged
@@ -37,6 +37,6 @@ dataSources:
           handler: handleOwnershipTransferred
         - event: WhitelistedChanged(indexed address,indexed bool)
           handler: handleWhitelistedChanged
-        - event: Withdrawn(uint256,indexed address)
+        - event: Withdrawn(indexed uint256,uint256,indexed address)
           handler: handleWithdrawn
       file: ./src/SharesTimeLock.ts

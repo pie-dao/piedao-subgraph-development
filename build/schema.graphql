@@ -3,12 +3,12 @@ type Stat @entity {
   locksCounter: BigInt!
 }
 
-type Account @entity {
+type Staker @entity {
   id: ID!
-  locks: [Lock!]! @derivedFrom(field: "account")
+  accountLocks: [Lock!]! @derivedFrom(field: "staker")
   totalStaked: BigInt!
-  rewardTokenTotalSupply: BigInt!
-  accountRewardTokenBalance: BigInt!
+  veTokenTotalSupply: BigInt!
+  accountVeTokenBalance: BigInt!
   accountWithdrawableRewards: BigInt!
   accountWithdrawnRewards: BigInt!
   accountDepositTokenBalance: BigInt!
@@ -21,6 +21,6 @@ type Lock @entity {
   lockDuration: BigInt!
   lockedAt: BigInt!
   amount: BigInt!
-  account: Account!
+  staker: Staker!
   withdrawn: Boolean!
 }

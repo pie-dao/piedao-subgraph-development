@@ -3,6 +3,12 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "lockId",
+        "type": "uint256"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "amount",
@@ -21,6 +27,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "lockId",
+        "type": "uint256"
+      },
       {
         "indexed": false,
         "internalType": "uint256",
@@ -46,6 +58,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "lockId",
+        "type": "uint256"
+      },
       {
         "indexed": false,
         "internalType": "uint256",
@@ -117,6 +135,12 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "lockId",
+        "type": "uint256"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "amount",
@@ -134,7 +158,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "lockId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "lockId",
+        "type": "uint256"
+      }
     ],
     "name": "boostToMax",
     "outputs": [],
@@ -143,19 +171,45 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" },
-      { "internalType": "uint256", "name": "lockId", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lockId",
+        "type": "uint256"
+      }
     ],
     "name": "canEject",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint256", "name": "months", "type": "uint256" },
-      { "internalType": "address", "name": "receiver", "type": "address" }
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "months",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
     ],
     "name": "depositByMonths",
     "outputs": [],
@@ -165,7 +219,13 @@
   {
     "inputs": [],
     "name": "depositToken",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -176,7 +236,11 @@
         "name": "lockAccounts",
         "type": "address[]"
       },
-      { "internalType": "uint256[]", "name": "lockIds", "type": "uint256[]" }
+      {
+        "internalType": "uint256[]",
+        "name": "lockIds",
+        "type": "uint256[]"
+      }
     ],
     "name": "eject",
     "outputs": [],
@@ -185,27 +249,49 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
     "name": "getLocksOfLength",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint32", "name": "duration", "type": "uint32" }
+      {
+        "internalType": "uint32",
+        "name": "duration",
+        "type": "uint32"
+      }
     ],
     "name": "getRewardsMultiplier",
     "outputs": [
-      { "internalType": "uint256", "name": "multiplier", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "multiplier",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
     "name": "getStakingData",
     "outputs": [
@@ -218,12 +304,12 @@
           },
           {
             "internalType": "uint256",
-            "name": "rewardTokenTotalSupply",
+            "name": "veTokenTotalSupply",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "accountRewardTokenBalance",
+            "name": "accountVeTokenBalance",
             "type": "uint256"
           },
           {
@@ -279,7 +365,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "depositToken_", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "depositToken_",
+        "type": "address"
+      },
       {
         "internalType": "contract ERC20NonTransferableRewardsOwned",
         "name": "rewardsToken_",
@@ -295,7 +385,11 @@
         "name": "maxLockDuration_",
         "type": "uint32"
       },
-      { "internalType": "uint256", "name": "minLockAmount_", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "minLockAmount_",
+        "type": "uint256"
+      }
     ],
     "name": "initialize",
     "outputs": [],
@@ -304,14 +398,34 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
     "name": "locksOf",
     "outputs": [
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint32", "name": "lockedAt", "type": "uint32" },
-      { "internalType": "uint32", "name": "lockDuration", "type": "uint32" }
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32",
+        "name": "lockedAt",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "lockDuration",
+        "type": "uint32"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -319,35 +433,71 @@
   {
     "inputs": [],
     "name": "maxLockDuration",
-    "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }],
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "maxRatioArray",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "minLockAmount",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "minLockDuration",
-    "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }],
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -374,13 +524,23 @@
   {
     "inputs": [],
     "name": "secPerMonth",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "minLockAmount_", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "minLockAmount_",
+        "type": "uint256"
+      }
     ],
     "name": "setMinLockAmount",
     "outputs": [],
@@ -402,8 +562,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "bool", "name": "isWhitelisted", "type": "bool" }
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
+      }
     ],
     "name": "setWhitelisted",
     "outputs": [],
@@ -412,7 +580,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -420,15 +592,31 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "name": "whitelisted",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "lockId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "lockId",
+        "type": "uint256"
+      }
     ],
     "name": "withdraw",
     "outputs": [],

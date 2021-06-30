@@ -52,7 +52,7 @@ export class Stat extends Entity {
   }
 }
 
-export class Account extends Entity {
+export class Staker extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -60,17 +60,17 @@ export class Account extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Account entity without an ID");
+    assert(id !== null, "Cannot save Staker entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Account entity with non-string ID. " +
+      "Cannot save Staker entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Account", id.toString(), this);
+    store.set("Staker", id.toString(), this);
   }
 
-  static load(id: string): Account | null {
-    return store.get("Account", id) as Account | null;
+  static load(id: string): Staker | null {
+    return store.get("Staker", id) as Staker | null;
   }
 
   get id(): string {
@@ -82,13 +82,13 @@ export class Account extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get locks(): Array<string> {
-    let value = this.get("locks");
+  get accountLocks(): Array<string> {
+    let value = this.get("accountLocks");
     return value.toStringArray();
   }
 
-  set locks(value: Array<string>) {
-    this.set("locks", Value.fromStringArray(value));
+  set accountLocks(value: Array<string>) {
+    this.set("accountLocks", Value.fromStringArray(value));
   }
 
   get totalStaked(): BigInt {
@@ -100,22 +100,22 @@ export class Account extends Entity {
     this.set("totalStaked", Value.fromBigInt(value));
   }
 
-  get rewardTokenTotalSupply(): BigInt {
-    let value = this.get("rewardTokenTotalSupply");
+  get veTokenTotalSupply(): BigInt {
+    let value = this.get("veTokenTotalSupply");
     return value.toBigInt();
   }
 
-  set rewardTokenTotalSupply(value: BigInt) {
-    this.set("rewardTokenTotalSupply", Value.fromBigInt(value));
+  set veTokenTotalSupply(value: BigInt) {
+    this.set("veTokenTotalSupply", Value.fromBigInt(value));
   }
 
-  get accountRewardTokenBalance(): BigInt {
-    let value = this.get("accountRewardTokenBalance");
+  get accountVeTokenBalance(): BigInt {
+    let value = this.get("accountVeTokenBalance");
     return value.toBigInt();
   }
 
-  set accountRewardTokenBalance(value: BigInt) {
-    this.set("accountRewardTokenBalance", Value.fromBigInt(value));
+  set accountVeTokenBalance(value: BigInt) {
+    this.set("accountVeTokenBalance", Value.fromBigInt(value));
   }
 
   get accountWithdrawableRewards(): BigInt {
@@ -221,13 +221,13 @@ export class Lock extends Entity {
     this.set("amount", Value.fromBigInt(value));
   }
 
-  get account(): string {
-    let value = this.get("account");
+  get staker(): string {
+    let value = this.get("staker");
     return value.toString();
   }
 
-  set account(value: string) {
-    this.set("account", Value.fromString(value));
+  set staker(value: string) {
+    this.set("staker", Value.fromString(value));
   }
 
   get withdrawn(): boolean {
