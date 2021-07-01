@@ -1,4 +1,4 @@
-type Stat @entity {
+type GlobalStat @entity {
   id: ID!,
   locksCounter: BigInt!
 }
