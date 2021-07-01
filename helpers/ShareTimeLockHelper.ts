@@ -1,6 +1,6 @@
-import { SharesTimeLock, Deposited } from "../generated/SharesTimeLock/SharesTimeLock"
+import { SharesTimeLock } from "../generated/SharesTimeLock/SharesTimeLock"
 import { Staker, Lock, GlobalStat } from "../generated/schema"
-import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 
 const UNIQUE_STAT_ID = "unique_stats_id";
 
@@ -48,12 +48,13 @@ export class ShareTimeLockHelper {
     return <GlobalStat>stats;
   }
 
-  static updateLock(hash: Bytes, lockId: BigInt, lockDuration: BigInt, timestamp: BigInt, amount: BigInt, staker: Staker): Lock {
+  static depositLock(lockId: BigInt, lockDuration: BigInt, timestamp: BigInt, amount: BigInt, staker: Staker): Lock {
     // loading lock entity, or creating if it doesn't exist yet...
-    let lock = Lock.load(hash.toHex());
+    let lockEntityId = staker.id + "_" + lockId.toString();
+    let lock = Lock.load(lockEntityId);
 
     if (lock == null) {
-      lock = new Lock(hash.toHex());
+      lock = new Lock(lockEntityId);
     }
 
     // filling the lock entity...
@@ -63,9 +64,25 @@ export class ShareTimeLockHelper {
     lock.amount = amount;
     lock.staker = staker.id;
     lock.withdrawn = false;
+    lock.ejected = false;
 
     // saving lock entity...
     lock.save();   
-    return <Lock>lock; 
+    return <Lock>lock;
   }
+
+  static withdrawLock(lockId: BigInt, owner: Address, flagType: String): Lock {
+    let lockEntityId = owner.toHexString() + "_" + lockId.toString();
+    let lock = Lock.load(lockEntityId);
+
+    if(flagType === "withdrawn") {
+      lock.withdrawn = true;
+    } else if(flagType === "ejected") {
+      lock.ejected = true;      
+    }
+    
+    // saving lock entity...
+    lock.save();   
+    return <Lock>lock;     
+  }  
 }

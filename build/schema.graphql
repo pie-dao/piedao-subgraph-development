@@ -23,4 +23,13 @@ type Lock @entity {
   amount: BigInt!
   staker: Staker!
   withdrawn: Boolean!
+  ejected: Boolean!
 }
+
+type ExampleEntity @entity {
+  id: ID!
+  count: BigInt!
+  _src: Bytes! # address
+  _dst: Bytes! # address
+}
+

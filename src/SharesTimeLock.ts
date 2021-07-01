@@ -13,8 +13,7 @@ export function handleDeposited(event: Deposited): void {
   // updating stakingData infos into Staker entity...
   let staker = ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
 
-  ShareTimeLockHelper.updateLock(
-    event.transaction.hash, 
+  ShareTimeLockHelper.depositLock(
     event.params.lockId, 
     event.params.lockDuration,
     event.block.timestamp,
@@ -24,16 +23,24 @@ export function handleDeposited(event: Deposited): void {
   ShareTimeLockHelper.updateGlobalGlobalStats();
 }
 
-export function handleBoostedToMax(event: BoostedToMax): void { }
-
 export function handleEjected(event: Ejected): void {
-
+  ShareTimeLockHelper.withdrawLock(
+    event.params.lockId, 
+    event.params.owner,
+    "ejected");
 }
+
+export function handleWithdrawn(event: Withdrawn): void {
+  ShareTimeLockHelper.withdrawLock(
+    event.params.lockId, 
+    event.params.owner,
+    "withdrawn");
+}
+
+export function handleBoostedToMax(event: BoostedToMax): void {}
 
 export function handleMinLockAmountChanged(event: MinLockAmountChanged): void { }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void { }
 
 export function handleWhitelistedChanged(event: WhitelistedChanged): void { }
-
-export function handleWithdrawn(event: Withdrawn): void { }
