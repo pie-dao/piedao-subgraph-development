@@ -6,9 +6,9 @@ dataSources:
     name: SharesTimeLock
     network: rinkeby
     source:
-      address: "0xff6D2c7DD1B265C7d69319236eFbdEDdd8964Bc9"
+      address: "0x03508154Dd64aCe391D1f0bdaAe9e426Be4A9e05"
       abi: SharesTimeLock
-      startBlock: 8854641
+      startBlock: 8860918
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -25,7 +25,7 @@ dataSources:
         - name: SharesTimeLock
           file: ./abis/SharesTimeLock.json
       eventHandlers:
-        - event: BoostedToMax(indexed uint256,uint256,indexed address)
+        - event: BoostedToMax(indexed uint256,indexed uint256,uint256,indexed address)
           handler: handleBoostedToMax
         - event: Deposited(indexed uint256,uint256,uint32,indexed address)
           handler: handleDeposited
@@ -40,55 +40,4 @@ dataSources:
         - event: Withdrawn(indexed uint256,uint256,indexed address)
           handler: handleWithdrawn
       file: ./src/SharesTimeLock.ts
-  - kind: ethereum/contract
-    name: BalancedCryptoPie
-    network: mainnet
-    source:
-      address: "0xE4f726Adc8e89C6a6017F01eadA77865dB22dA14"
-      abi: BalancedCryptoPie
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Approval
-        - CapChanged
-        - CircuitBreakerChanged
-        - CircuitBreakerTripped
-        - ControllerChanged
-        - JoinExitEnabledChanged
-        - PublicSwapSet
-        - PublicSwapSetterChanged
-        - SwapFeeSet
-        - TokenBinderChanged
-        - TokensApproved
-        - Transfer
-      abis:
-        - name: BalancedCryptoPie
-          file: ./abis/BalancedCryptoPie.json
-      eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: CapChanged(indexed address,uint256,uint256)
-          handler: handleCapChanged
-        - event: CircuitBreakerChanged(indexed address,indexed address)
-          handler: handleCircuitBreakerChanged
-        - event: CircuitBreakerTripped()
-          handler: handleCircuitBreakerTripped
-        - event: ControllerChanged(indexed address,indexed address)
-          handler: handleControllerChanged
-        - event: JoinExitEnabledChanged(indexed address,bool,bool)
-          handler: handleJoinExitEnabledChanged
-        - event: PublicSwapSet(indexed address,indexed bool)
-          handler: handlePublicSwapSet
-        - event: PublicSwapSetterChanged(indexed address,indexed address)
-          handler: handlePublicSwapSetterChanged
-        - event: SwapFeeSet(indexed address,uint256)
-          handler: handleSwapFeeSet
-        - event: TokenBinderChanged(indexed address,indexed address)
-          handler: handleTokenBinderChanged
-        - event: TokensApproved()
-          handler: handleTokensApproved
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/BalancedCryptoPie.ts      
+  

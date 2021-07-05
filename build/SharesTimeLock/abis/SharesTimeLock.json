@@ -5,7 +5,13 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "lockId",
+        "name": "oldLockId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "newLockId",
         "type": "uint256"
       },
       {

@@ -18,7 +18,7 @@ export function handleDeposited(event: Deposited): void {
     event.params.lockDuration,
     event.block.timestamp,
     event.params.amount,
-    staker);
+    staker.id);
 
   ShareTimeLockHelper.updateGlobalGlobalStats();
 }
@@ -26,18 +26,24 @@ export function handleDeposited(event: Deposited): void {
 export function handleEjected(event: Ejected): void {
   ShareTimeLockHelper.withdrawLock(
     event.params.lockId, 
-    event.params.owner,
+    event.params.owner.toHex(),
     "ejected");
 }
 
 export function handleWithdrawn(event: Withdrawn): void {
   ShareTimeLockHelper.withdrawLock(
     event.params.lockId, 
-    event.params.owner,
+    event.params.owner.toHex(),
     "withdrawn");
 }
 
-export function handleBoostedToMax(event: BoostedToMax): void {}
+export function handleBoostedToMax(event: BoostedToMax): void {
+  ShareTimeLockHelper.boostToMax(
+    event.params.oldLockId,
+    event.params.newLockId, 
+    event.params.owner.toHex(),
+    event.block.timestamp,);  
+}
 
 export function handleMinLockAmountChanged(event: MinLockAmountChanged): void { }
 

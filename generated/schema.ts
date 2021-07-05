@@ -247,6 +247,15 @@ export class Lock extends Entity {
   set ejected(value: boolean) {
     this.set("ejected", Value.fromBoolean(value));
   }
+
+  get boosted(): string {
+    let value = this.get("boosted");
+    return value.toString();
+  }
+
+  set boosted(value: string) {
+    this.set("boosted", Value.fromString(value));
+  }
 }
 
 export class ExampleEntity extends Entity {

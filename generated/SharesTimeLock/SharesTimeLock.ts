@@ -23,16 +23,20 @@ export class BoostedToMax__Params {
     this._event = event;
   }
 
-  get lockId(): BigInt {
+  get oldLockId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get amount(): BigInt {
+  get newLockId(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 
+  get amount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
   get owner(): Address {
-    return this._event.parameters[2].value.toAddress();
+    return this._event.parameters[3].value.toAddress();
   }
 }
 

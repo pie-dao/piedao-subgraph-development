@@ -48,9 +48,9 @@ export class ShareTimeLockHelper {
     return <GlobalStat>stats;
   }
 
-  static depositLock(lockId: BigInt, lockDuration: BigInt, timestamp: BigInt, amount: BigInt, staker: Staker): Lock {
+  static depositLock(lockId: BigInt, lockDuration: BigInt, timestamp: BigInt, amount: BigInt, owner: string): Lock {
     // loading lock entity, or creating if it doesn't exist yet...
-    let lockEntityId = staker.id + "_" + lockId.toString();
+    let lockEntityId = owner + "_" + lockId.toString();
     let lock = Lock.load(lockEntityId);
 
     if (lock == null) {
@@ -62,17 +62,18 @@ export class ShareTimeLockHelper {
     lock.lockDuration = lockDuration;
     lock.lockedAt = timestamp;
     lock.amount = amount;
-    lock.staker = staker.id;
+    lock.staker = owner;
     lock.withdrawn = false;
     lock.ejected = false;
+    lock.boosted = null;
 
     // saving lock entity...
     lock.save();   
     return <Lock>lock;
   }
 
-  static withdrawLock(lockId: BigInt, owner: Address, flagType: String): Lock {
-    let lockEntityId = owner.toHexString() + "_" + lockId.toString();
+  static withdrawLock(lockId: BigInt, owner: string, flagType: String): Lock {
+    let lockEntityId = owner + "_" + lockId.toString();
     let lock = Lock.load(lockEntityId);
 
     if(flagType === "withdrawn") {
@@ -84,5 +85,17 @@ export class ShareTimeLockHelper {
     // saving lock entity...
     lock.save();   
     return <Lock>lock;     
-  }  
+  }
+
+  static boostToMax(oldLockId: BigInt, newLockId: BigInt, owner: string, timestamp: BigInt): Lock {
+    let lockEntityId = owner + "_" + oldLockId.toString();
+    let lock = Lock.load(lockEntityId);
+
+    let newLock = this.depositLock(newLockId, lock.lockDuration, timestamp, lock.amount, owner);
+    lock.boosted = newLock.id;
+    
+    // saving lock entity...
+    lock.save();   
+    return <Lock>lock;         
+  }
 }

@@ -24,6 +24,7 @@ type Lock @entity {
   staker: Staker!
   withdrawn: Boolean!
   ejected: Boolean!
+  boosted: ID!
 }
 
 type ExampleEntity @entity {
