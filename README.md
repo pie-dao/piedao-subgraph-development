@@ -1,6 +1,6 @@
 # PieDAO Subgraph
-This is the official PieDAO Subgraph, still under development.
-
+This is the official PieDAO Subgraph Testnet, still under development.
+https://thegraph.com/explorer/subgraph/chiptuttofuso/piedaosubgraphdevelop
 ## Important Notes
 - when you automagically generate the code from an existing proxied contract, you should first generate the code using the original contract address, and then change the address to the proxied one into the subgraph.yaml file.
 - when you are testing locally, it is important to properly configure the file under graph-node/docker/docker-compose.yml, and to set the environment:ethereum url to a correct working one.
