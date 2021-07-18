@@ -14,13 +14,9 @@ dataSources:
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - BoostedToMax
-        - Deposited
-        - Ejected
-        - MinLockAmountChanged
-        - OwnershipTransferred
-        - WhitelistedChanged
-        - Withdrawn
+        - GlobalStat
+        - Staker
+        - Lock
       abis:
         - name: SharesTimeLock
           file: SharesTimeLock/abis/SharesTimeLock.json
@@ -40,3 +36,41 @@ dataSources:
         - event: Withdrawn(indexed uint256,uint256,indexed address)
           handler: handleWithdrawn
       file: SharesTimeLock/SharesTimeLock.wasm
+  - kind: ethereum/contract
+    name: NonTransferableRewardsOwned
+    network: rinkeby
+    source:
+      address: "0x6f64B2626939A313B831D435fc68238e35CA5f97"
+      abi: NonTransferableRewardsOwned
+      startBlock: 8860917
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - GlobalStat
+        - Staker
+        - Lock
+      abis:
+        - name: NonTransferableRewardsOwned
+          file: NonTransferableRewardsOwned/abis/NonTransferableRewardsOwned.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: ClaimedFor(uint256,indexed address,indexed address,bytes[])
+          handler: handleClaimedFor
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RewardsDistributed(indexed address,uint256)
+          handler: handleRewardsDistributed
+        - event: RewardsWithdrawn(indexed address,uint256)
+          handler: handleRewardsWithdrawn
+        - event: RoleAdminChanged(indexed bytes,indexed bytes,indexed bytes)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: NonTransferableRewardsOwned/NonTransferableRewardsOwned.wasm

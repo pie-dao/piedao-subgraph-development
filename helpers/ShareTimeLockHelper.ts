@@ -9,7 +9,7 @@ export class ShareTimeLockHelper {
 
   static updateStakingData(contractAddress: Address, fromAddress: Address): Staker {
     // loading the contract, and calling the getStakingData function...
-    let sharesTimeLock = SharesTimeLock.bind(contractAddress)
+    let sharesTimeLock = SharesTimeLock.bind(contractAddress);
     let stakingData = sharesTimeLock.getStakingData(fromAddress);
   
     // loading staker entity, or creating if it doesn't exist yet...

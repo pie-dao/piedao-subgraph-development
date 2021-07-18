@@ -26,11 +26,3 @@ type Lock @entity {
   ejected: Boolean!
   boosted: ID!
 }
-
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  _src: Bytes! # address
-  _dst: Bytes! # address
-}
-

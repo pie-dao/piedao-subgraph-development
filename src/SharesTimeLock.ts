@@ -7,7 +7,7 @@ import {
   WhitelistedChanged,
   Withdrawn
 } from "../generated/SharesTimeLock/SharesTimeLock"
-import { ShareTimeLockHelper } from "../helpers/ShareTimeLockHelper";
+import { ShareTimeLockHelper } from "../helpers/ShareTimeLockHelper"
 
 export function handleDeposited(event: Deposited): void {
   // updating stakingData infos into Staker entity...
