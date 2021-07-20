@@ -110,6 +110,28 @@ export class RewardsDistributed__Params {
   }
 }
 
+export class RewardsRedistributed extends ethereum.Event {
+  get params(): RewardsRedistributed__Params {
+    return new RewardsRedistributed__Params(this);
+  }
+}
+
+export class RewardsRedistributed__Params {
+  _event: RewardsRedistributed;
+
+  constructor(event: RewardsRedistributed) {
+    this._event = event;
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get account(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class RewardsWithdrawn extends ethereum.Event {
   get params(): RewardsWithdrawn__Params {
     return new RewardsWithdrawn__Params(this);

@@ -6,9 +6,9 @@ dataSources:
     name: SharesTimeLock
     network: rinkeby
     source:
-      address: "0x03508154Dd64aCe391D1f0bdaAe9e426Be4A9e05"
+      address: "0x441658De8ebCB25d8D320Bd5C1Abb314b0CE195E"
       abi: SharesTimeLock
-      startBlock: 8860918
+      startBlock: 8969124
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -40,9 +40,9 @@ dataSources:
     name: NonTransferableRewardsOwned
     network: rinkeby
     source:
-      address: "0x6f64B2626939A313B831D435fc68238e35CA5f97"
+      address: "0xA4D4587480a61809Cbdee20F8E0d9a5c4A031d72"
       abi: NonTransferableRewardsOwned
-      startBlock: 8860917
+      startBlock: 8969123
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -63,6 +63,8 @@ dataSources:
           handler: handleOwnershipTransferred
         - event: RewardsDistributed(indexed address,uint256)
           handler: handleRewardsDistributed
+        - event: RewardsRedistributed(uint256,indexed address)
+          handler: handleRewardsRedistributed
         - event: RewardsWithdrawn(indexed address,uint256)
           handler: handleRewardsWithdrawn
         - event: RoleAdminChanged(indexed bytes,indexed bytes,indexed bytes)
