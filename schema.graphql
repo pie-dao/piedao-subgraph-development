@@ -6,6 +6,7 @@ type GlobalStat @entity {
 type Staker @entity {
   id: ID!
   accountLocks: [Lock!]! @derivedFrom(field: "staker")
+  accountRewards: [Reward!]! @derivedFrom(field: "staker")
   totalStaked: BigInt!
   veTokenTotalSupply: BigInt!
   accountVeTokenBalance: BigInt!
@@ -13,6 +14,14 @@ type Staker @entity {
   accountWithdrawnRewards: BigInt!
   accountDepositTokenBalance: BigInt!
   accountDepositTokenAllowance: BigInt!
+}
+
+type Reward @entity {
+  id:  ID!
+  timestamp: BigInt!
+  amount: BigInt!
+  staker: Staker!
+  type: String!
 }
 
 type Lock @entity {

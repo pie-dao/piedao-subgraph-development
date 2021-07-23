@@ -14,7 +14,7 @@ export class ShareTimeLockHelper {
   
     // loading staker entity, or creating if it doesn't exist yet...
     let staker = Staker.load(fromAddress.toHex());
-  
+
     if (staker == null) {
       staker = new Staker(fromAddress.toHex());
     }

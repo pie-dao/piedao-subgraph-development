@@ -91,6 +91,15 @@ export class Staker extends Entity {
     this.set("accountLocks", Value.fromStringArray(value));
   }
 
+  get accountRewards(): Array<string> {
+    let value = this.get("accountRewards");
+    return value.toStringArray();
+  }
+
+  set accountRewards(value: Array<string>) {
+    this.set("accountRewards", Value.fromStringArray(value));
+  }
+
   get totalStaked(): BigInt {
     let value = this.get("totalStaked");
     return value.toBigInt();
@@ -152,6 +161,73 @@ export class Staker extends Entity {
 
   set accountDepositTokenAllowance(value: BigInt) {
     this.set("accountDepositTokenAllowance", Value.fromBigInt(value));
+  }
+}
+
+export class Reward extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Reward entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Reward entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Reward", id.toString(), this);
+  }
+
+  static load(id: string): Reward | null {
+    return store.get("Reward", id) as Reward | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+
+  get staker(): string {
+    let value = this.get("staker");
+    return value.toString();
+  }
+
+  set staker(value: string) {
+    this.set("staker", Value.fromString(value));
+  }
+
+  get type(): string {
+    let value = this.get("type");
+    return value.toString();
+  }
+
+  set type(value: string) {
+    this.set("type", Value.fromString(value));
   }
 }
 
