@@ -30,10 +30,12 @@ export class NonTransferableRewardsOwnedHelper {
   static updateAllStakingData(): void {
     let sharesTimeLockAddress = <Address> Address.fromHexString("0x441658De8ebCB25d8D320Bd5C1Abb314b0CE195E");
     let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
-
-    stakersTracker.stakers.forEach(staker => {
-      ShareTimeLockHelper.updateStakingData(sharesTimeLockAddress, Address.fromHexString(staker));
-    });
+    let stakers = stakersTracker.stakers;
+    
+    for(let i = 0; i < stakers.length; i += 1) {
+      let staker = stakers[i];
+      ShareTimeLockHelper.updateStakingData(sharesTimeLockAddress, <Address>Address.fromHexString(<string>staker));
+    };
   }  
 
   static saveRewards(hashID: string, timestamp: BigInt, amount: BigInt, by: string, type: string): Reward {
