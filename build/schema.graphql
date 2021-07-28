@@ -16,6 +16,12 @@ type Staker @entity {
   accountDepositTokenAllowance: BigInt!
 }
 
+type StakersTracker @entity {
+  id: ID!
+  counter: BigInt!
+  stakers: [String!]!
+}
+
 type Reward @entity {
   id:  ID!
   timestamp: BigInt!

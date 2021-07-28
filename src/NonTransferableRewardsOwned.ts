@@ -11,7 +11,7 @@ import {
   Transfer
 } from "../generated/NonTransferableRewardsOwned/NonTransferableRewardsOwned"
 import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
-import { log } from "@graphprotocol/graph-ts"
+import { Address, log } from "@graphprotocol/graph-ts"
 
 export function handleRewardsWithdrawn(event: RewardsWithdrawn): void {
   NonTransferableRewardsOwnedHelper.saveRewards(
@@ -20,6 +20,8 @@ export function handleRewardsWithdrawn(event: RewardsWithdrawn): void {
     event.params.fundsWithdrawn,
     event.params.by.toHex(),
     "claimed");
+
+    NonTransferableRewardsOwnedHelper.updateStakingData(event.params.by);
 }
 
 export function handleRewardsRedistributed(event: RewardsRedistributed): void {
@@ -29,10 +31,8 @@ export function handleRewardsRedistributed(event: RewardsRedistributed): void {
     event.params.amount,
     event.params.account.toHex(),
     "slashed");  
-}
 
-export function handleClaimedFor(event: ClaimedFor): void {
-  log.info("----- handleClaimedFor -----", []);
+    NonTransferableRewardsOwnedHelper.updateAllStakingData();
 }
 
 export function handleRewardsDistributed(event: RewardsDistributed): void {
@@ -41,7 +41,13 @@ export function handleRewardsDistributed(event: RewardsDistributed): void {
     event.block.timestamp, 
     event.params.rewardsDistributed,
     event.params.by.toHex(),
-    "distributed"); 
+    "distributed");
+
+    NonTransferableRewardsOwnedHelper.updateAllStakingData();
+}
+
+export function handleClaimedFor(event: ClaimedFor): void {
+  log.info("----- handleClaimedFor -----", []);
 }
 
 /*
