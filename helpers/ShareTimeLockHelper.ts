@@ -60,7 +60,7 @@ export class ShareTimeLockHelper {
     return <GlobalStat>stats;
   }
 
-  static depositLock(lockId: BigInt, lockDuration: BigInt, timestamp: BigInt, amount: BigInt, owner: string): Lock {
+  static depositLock(lockId: BigInt, lockDuration: BigInt, timestamp: BigInt, amount: BigInt, owner: string, boosted: boolean): Lock {
     // loading lock entity, or creating if it doesn't exist yet...
     let lockEntityId = owner + "_" + lockId.toString();
     let lock = Lock.load(lockEntityId);
@@ -77,7 +77,8 @@ export class ShareTimeLockHelper {
     lock.staker = owner;
     lock.withdrawn = false;
     lock.ejected = false;
-    lock.boosted = null;
+    lock.boosted = boosted;
+    lock.boostedPointer = null;
 
     // saving lock entity...
     lock.save();   
@@ -103,8 +104,8 @@ export class ShareTimeLockHelper {
     let lockEntityId = owner + "_" + oldLockId.toString();
     let lock = Lock.load(lockEntityId);
 
-    let newLock = this.depositLock(newLockId, lock.lockDuration, timestamp, lock.amount, owner);
-    lock.boosted = newLock.id;
+    let newLock = this.depositLock(newLockId, lock.lockDuration, timestamp, lock.amount, owner, true);
+    lock.boostedPointer = newLock.id;
     
     // saving lock entity...
     lock.save();

@@ -18,7 +18,8 @@ export function handleDeposited(event: Deposited): void {
     event.params.lockDuration,
     event.block.timestamp,
     event.params.amount,
-    staker.id);
+    staker.id,
+    false);
 
   ShareTimeLockHelper.updateGlobalGlobalStats();
 }

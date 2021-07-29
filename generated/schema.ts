@@ -373,12 +373,21 @@ export class Lock extends Entity {
     this.set("ejected", Value.fromBoolean(value));
   }
 
-  get boosted(): string {
+  get boosted(): boolean {
     let value = this.get("boosted");
+    return value.toBoolean();
+  }
+
+  set boosted(value: boolean) {
+    this.set("boosted", Value.fromBoolean(value));
+  }
+
+  get boostedPointer(): string {
+    let value = this.get("boostedPointer");
     return value.toString();
   }
 
-  set boosted(value: string) {
-    this.set("boosted", Value.fromString(value));
+  set boostedPointer(value: string) {
+    this.set("boostedPointer", Value.fromString(value));
   }
 }

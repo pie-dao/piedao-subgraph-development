@@ -39,5 +39,6 @@ type Lock @entity {
   staker: Staker!
   withdrawn: Boolean!
   ejected: Boolean!
-  boosted: ID!
+  boosted: Boolean!
+  boostedPointer: ID!
 }
