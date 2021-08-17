@@ -80,3 +80,31 @@ dataSources:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
       file: NonTransferableRewardsOwned/NonTransferableRewardsOwned.wasm
+  - kind: ethereum/contract
+    name: Dough
+    network: rinkeby
+    source:
+      address: "0x6503e51056c881ebf463207f8e969fa45a1e0747"
+      abi: Dough
+      startBlock: 8728693
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - GlobalStat
+        - Staker
+        - Lock
+      abis:
+        - name: SharesTimeLock
+          file: Dough/abis/SharesTimeLock.json
+        - name: Dough
+          file: Dough/abis/Dough.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Delegate(indexed address,indexed address)
+          handler: handleDelegate
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: Dough/Dough.wasm

@@ -11,37 +11,43 @@ export class ShareTimeLockHelper {
   static updateStakingData(contractAddress: Address, fromAddress: Address): Staker {
     // loading the contract, and calling the getStakingData function...
     let sharesTimeLock = SharesTimeLock.bind(contractAddress);
-    let stakingData = sharesTimeLock.getStakingData(fromAddress);
-  
-    // loading staker entity, or creating if it doesn't exist yet...
-    let staker = Staker.load(fromAddress.toHex());
+    let callResult = sharesTimeLock.try_getStakingData(fromAddress);
 
-    if (staker == null) {
-      staker = new Staker(fromAddress.toHex());
+    if (callResult.reverted) {
+      return null;
+    } else {
+      let stakingData = callResult.value;
 
-      // updating the stakersTracker entity, to keep our stakerIDs always in sync...
-      let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
+      // loading staker entity, or creating if it doesn't exist yet...
+      let staker = Staker.load(fromAddress.toHex());
 
-      let stakers = stakersTracker.stakers;
-      stakers.push(fromAddress.toHexString());
+      if (staker == null) {
+        staker = new Staker(fromAddress.toHex());
 
-      stakersTracker.stakers = stakers;
-      stakersTracker.counter = stakersTracker.counter.plus(BigInt.fromI32(1));
+        // updating the stakersTracker entity, to keep our stakerIDs always in sync...
+        let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
 
-      stakersTracker.save();
-    }
-  
-    // refilling the staked entity...
-    staker.totalStaked = stakingData.totalStaked;
-    staker.veTokenTotalSupply = stakingData.veTokenTotalSupply;
-    staker.accountVeTokenBalance = stakingData.accountVeTokenBalance;
-    staker.accountWithdrawableRewards = stakingData.accountWithdrawableRewards;
-    staker.accountWithdrawnRewards = stakingData.accountWithdrawnRewards;
-    staker.accountDepositTokenBalance = stakingData.accountDepositTokenBalance;
-    staker.accountDepositTokenAllowance = stakingData.accountDepositTokenAllowance;
-    staker.save();
+        let stakers = stakersTracker.stakers;
+        stakers.push(fromAddress.toHexString());
+
+        stakersTracker.stakers = stakers;
+        stakersTracker.counter = stakersTracker.counter.plus(BigInt.fromI32(1));
+
+        stakersTracker.save();
+      }
     
-    return <Staker>staker;
+      // refilling the staked entity...
+      staker.totalStaked = stakingData.totalStaked;
+      staker.veTokenTotalSupply = stakingData.veTokenTotalSupply;
+      staker.accountVeTokenBalance = stakingData.accountVeTokenBalance;
+      staker.accountWithdrawableRewards = stakingData.accountWithdrawableRewards;
+      staker.accountWithdrawnRewards = stakingData.accountWithdrawnRewards;
+      staker.accountDepositTokenBalance = stakingData.accountDepositTokenBalance;
+      staker.accountDepositTokenAllowance = stakingData.accountDepositTokenAllowance;
+      staker.save();
+      
+      return <Staker>staker;    
+    }
   }
 
   static updateGlobalGlobalStats(): GlobalStat {
