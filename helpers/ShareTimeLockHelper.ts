@@ -46,7 +46,7 @@ export class ShareTimeLockHelper {
       staker.accountDepositTokenAllowance = stakingData.accountDepositTokenAllowance;
       staker.save();
       
-      return <Staker>staker;    
+      return <Staker>staker;
     }
   }
 

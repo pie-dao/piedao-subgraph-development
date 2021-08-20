@@ -55,8 +55,14 @@ export function handleBoostedToMax(event: BoostedToMax): void {
     ShareTimeLockHelper.updateGlobalGlobalStats();
 }
 
-export function handleMinLockAmountChanged(event: MinLockAmountChanged): void { }
+export function handleMinLockAmountChanged(event: MinLockAmountChanged): void {
+  ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
+}
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void { }
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {
+  ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
+}
 
-export function handleWhitelistedChanged(event: WhitelistedChanged): void { }
+export function handleWhitelistedChanged(event: WhitelistedChanged): void {
+  ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
+}

@@ -50,13 +50,17 @@ export function handleClaimedFor(event: ClaimedFor): void {
   log.info("----- handleClaimedFor -----", []);
 }
 
+export function handleApproval(event: Approval): void {
+  NonTransferableRewardsOwnedHelper.updateStakingData(event.transaction.from);
+}
+
+export function handleTransfer(event: Transfer): void {
+  NonTransferableRewardsOwnedHelper.updateStakingData(event.transaction.from);
+}
+
 /*
  * Not Needed Functions for now.
  */
-
-export function handleApproval(event: Approval): void {}
-
-export function handleTransfer(event: Transfer): void {}
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
