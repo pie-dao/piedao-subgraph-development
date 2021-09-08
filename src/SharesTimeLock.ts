@@ -46,10 +46,11 @@ export function handleWithdrawn(event: Withdrawn): void {
 
 export function handleBoostedToMax(event: BoostedToMax): void {
   ShareTimeLockHelper.boostToMax(
+    event.address,
     event.params.oldLockId,
     event.params.newLockId, 
     event.params.owner.toHex(),
-    event.block.timestamp,);  
+    event.block.timestamp);  
 
     let staker = ShareTimeLockHelper.updateStakingData(event.address, event.params.owner);    
     ShareTimeLockHelper.updateGlobalGlobalStats();

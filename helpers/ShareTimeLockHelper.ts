@@ -106,11 +106,14 @@ export class ShareTimeLockHelper {
     return <Lock>lock;     
   }
 
-  static boostToMax(oldLockId: BigInt, newLockId: BigInt, owner: string, timestamp: BigInt): Lock {
+  static boostToMax(contractAddress: Address, oldLockId: BigInt, newLockId: BigInt, owner: string, timestamp: BigInt): Lock {
+    let sharesTimeLock = SharesTimeLock.bind(contractAddress);
+    let maxLockDuration = sharesTimeLock.maxLockDuration();
+
     let lockEntityId = owner + "_" + oldLockId.toString();
     let lock = Lock.load(lockEntityId);
 
-    let newLock = this.depositLock(newLockId, lock.lockDuration, timestamp, lock.amount, owner, true);
+    let newLock = this.depositLock(newLockId, maxLockDuration, timestamp, lock.amount, owner, true);
     lock.boostedPointer = newLock.id;
     
     // saving lock entity...
