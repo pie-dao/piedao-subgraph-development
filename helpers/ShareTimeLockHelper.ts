@@ -50,7 +50,7 @@ export class ShareTimeLockHelper {
     }
   }
 
-  static updateGlobalGlobalStats(staker: Staker, lock: Lock, newLock: Lock, type: string): GlobalStat {
+  static updateGlobalGlobalStats(staker: Staker, lock: Lock, newLock: Lock, type: string): GlobalStat {  
     // loading stats entity, or creating if it doesn't exist yet...
     let stats = GlobalStat.load(UNIQUE_STAT_ID);
     
@@ -75,23 +75,15 @@ export class ShareTimeLockHelper {
         stats.locksDuration = stats.locksDuration.plus(lock.lockDuration).div(BigInt.fromI32(2));
       } else {
         if(type == 'withdrawn') {
-          stats.depositedLocksCounter = stats.depositedLocksCounter.minus(BigInt.fromI32(1));
           stats.withdrawnLocksCounter = stats.withdrawnLocksCounter.plus(BigInt.fromI32(1));
-
-          stats.depositedLocksValue = stats.depositedLocksValue.minus(lock.amount);
           stats.withdrawnLocksValue = stats.withdrawnLocksValue.plus(lock.amount);
         } else {
           if(type == 'ejected') {
-            stats.depositedLocksCounter = stats.depositedLocksCounter.minus(BigInt.fromI32(1));
             stats.ejectedLocksCounter = stats.ejectedLocksCounter.plus(BigInt.fromI32(1));
-
-            stats.depositedLocksValue = stats.depositedLocksValue.minus(lock.amount);
             stats.ejectedLocksValue = stats.ejectedLocksValue.plus(lock.amount);
           } else if(type == 'boosted') {
-            stats.depositedLocksCounter = stats.depositedLocksCounter.minus(BigInt.fromI32(1));
+            stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
             stats.boostedLocksCounter = stats.boostedLocksCounter.plus(BigInt.fromI32(1));
-            
-            stats.depositedLocksValue = stats.depositedLocksValue.minus(lock.amount);
             stats.boostedLocksValue = stats.boostedLocksValue.plus(newLock.amount);
             stats.locksDuration = stats.locksDuration.plus(newLock.lockDuration).div(BigInt.fromI32(2));
           }
