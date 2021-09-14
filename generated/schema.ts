@@ -42,13 +42,103 @@ export class GlobalStat extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get locksCounter(): BigInt {
-    let value = this.get("locksCounter");
+  get depositedLocksCounter(): BigInt {
+    let value = this.get("depositedLocksCounter");
     return value.toBigInt();
   }
 
-  set locksCounter(value: BigInt) {
-    this.set("locksCounter", Value.fromBigInt(value));
+  set depositedLocksCounter(value: BigInt) {
+    this.set("depositedLocksCounter", Value.fromBigInt(value));
+  }
+
+  get depositedLocksValue(): BigInt {
+    let value = this.get("depositedLocksValue");
+    return value.toBigInt();
+  }
+
+  set depositedLocksValue(value: BigInt) {
+    this.set("depositedLocksValue", Value.fromBigInt(value));
+  }
+
+  get withdrawnLocksCounter(): BigInt {
+    let value = this.get("withdrawnLocksCounter");
+    return value.toBigInt();
+  }
+
+  set withdrawnLocksCounter(value: BigInt) {
+    this.set("withdrawnLocksCounter", Value.fromBigInt(value));
+  }
+
+  get withdrawnLocksValue(): BigInt {
+    let value = this.get("withdrawnLocksValue");
+    return value.toBigInt();
+  }
+
+  set withdrawnLocksValue(value: BigInt) {
+    this.set("withdrawnLocksValue", Value.fromBigInt(value));
+  }
+
+  get ejectedLocksCounter(): BigInt {
+    let value = this.get("ejectedLocksCounter");
+    return value.toBigInt();
+  }
+
+  set ejectedLocksCounter(value: BigInt) {
+    this.set("ejectedLocksCounter", Value.fromBigInt(value));
+  }
+
+  get ejectedLocksValue(): BigInt {
+    let value = this.get("ejectedLocksValue");
+    return value.toBigInt();
+  }
+
+  set ejectedLocksValue(value: BigInt) {
+    this.set("ejectedLocksValue", Value.fromBigInt(value));
+  }
+
+  get boostedLocksCounter(): BigInt {
+    let value = this.get("boostedLocksCounter");
+    return value.toBigInt();
+  }
+
+  set boostedLocksCounter(value: BigInt) {
+    this.set("boostedLocksCounter", Value.fromBigInt(value));
+  }
+
+  get boostedLocksValue(): BigInt {
+    let value = this.get("boostedLocksValue");
+    return value.toBigInt();
+  }
+
+  set boostedLocksValue(value: BigInt) {
+    this.set("boostedLocksValue", Value.fromBigInt(value));
+  }
+
+  get locksDuration(): BigInt {
+    let value = this.get("locksDuration");
+    return value.toBigInt();
+  }
+
+  set locksDuration(value: BigInt) {
+    this.set("locksDuration", Value.fromBigInt(value));
+  }
+
+  get totalStaked(): BigInt {
+    let value = this.get("totalStaked");
+    return value.toBigInt();
+  }
+
+  set totalStaked(value: BigInt) {
+    this.set("totalStaked", Value.fromBigInt(value));
+  }
+
+  get veTokenTotalSupply(): BigInt {
+    let value = this.get("veTokenTotalSupply");
+    return value.toBigInt();
+  }
+
+  set veTokenTotalSupply(value: BigInt) {
+    this.set("veTokenTotalSupply", Value.fromBigInt(value));
   }
 }
 

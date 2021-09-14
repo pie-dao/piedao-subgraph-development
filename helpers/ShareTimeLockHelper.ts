@@ -50,16 +50,58 @@ export class ShareTimeLockHelper {
     }
   }
 
-  static updateGlobalGlobalStats(): GlobalStat {
+  static updateGlobalGlobalStats(staker: Staker, lock: Lock, newLock: Lock, type: string): GlobalStat {
     // loading stats entity, or creating if it doesn't exist yet...
     let stats = GlobalStat.load(UNIQUE_STAT_ID);
     
     if (stats == null) {
       stats = new GlobalStat(UNIQUE_STAT_ID);
-      stats.locksCounter = BigInt.fromI32(1);
+      stats.depositedLocksCounter = type == 'deposited' ? BigInt.fromI32(1) : BigInt.fromI32(0);
+      stats.depositedLocksValue = lock.amount;
+      stats.locksDuration = lock.lockDuration;
+
+      stats.withdrawnLocksCounter = BigInt.fromI32(0);
+      stats.withdrawnLocksValue = BigInt.fromI32(0);
+
+      stats.ejectedLocksCounter = BigInt.fromI32(0);
+      stats.ejectedLocksValue = BigInt.fromI32(0);
+
+      stats.boostedLocksCounter = BigInt.fromI32(0);
+      stats.boostedLocksValue = BigInt.fromI32(0);
     } else {
-      stats.locksCounter = stats.locksCounter.plus(BigInt.fromI32(1));
+      if(type == 'deposited') {
+        stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
+        stats.depositedLocksValue = stats.depositedLocksValue.plus(lock.amount);
+        stats.locksDuration = stats.locksDuration.plus(lock.lockDuration).div(BigInt.fromI32(2));
+      } else {
+        if(type == 'withdrawn') {
+          stats.depositedLocksCounter = stats.depositedLocksCounter.minus(BigInt.fromI32(1));
+          stats.withdrawnLocksCounter = stats.withdrawnLocksCounter.plus(BigInt.fromI32(1));
+
+          stats.depositedLocksValue = stats.depositedLocksValue.minus(lock.amount);
+          stats.withdrawnLocksValue = stats.withdrawnLocksValue.plus(lock.amount);
+        } else {
+          if(type == 'ejected') {
+            stats.depositedLocksCounter = stats.depositedLocksCounter.minus(BigInt.fromI32(1));
+            stats.ejectedLocksCounter = stats.ejectedLocksCounter.plus(BigInt.fromI32(1));
+
+            stats.depositedLocksValue = stats.depositedLocksValue.minus(lock.amount);
+            stats.ejectedLocksValue = stats.ejectedLocksValue.plus(lock.amount);
+          } else if(type == 'boosted') {
+            stats.depositedLocksCounter = stats.depositedLocksCounter.minus(BigInt.fromI32(1));
+            stats.boostedLocksCounter = stats.boostedLocksCounter.plus(BigInt.fromI32(1));
+            
+            stats.depositedLocksValue = stats.depositedLocksValue.minus(lock.amount);
+            stats.boostedLocksValue = stats.boostedLocksValue.plus(newLock.amount);
+            stats.locksDuration = stats.locksDuration.plus(newLock.lockDuration).div(BigInt.fromI32(2));
+          }
+        }
+      }
     }
+
+    // those values are always updated, coming from onChain call, so we can just override them...
+    stats.totalStaked = staker.totalStaked;
+    stats.veTokenTotalSupply = staker.veTokenTotalSupply;    
 
     // saving stats entity...
     stats.save();    
@@ -106,7 +148,7 @@ export class ShareTimeLockHelper {
     return <Lock>lock;     
   }
 
-  static boostToMax(contractAddress: Address, oldLockId: BigInt, newLockId: BigInt, owner: string, timestamp: BigInt): Lock {
+  static boostToMax(contractAddress: Address, oldLockId: BigInt, newLockId: BigInt, owner: string, timestamp: BigInt): Lock[] {
     let sharesTimeLock = SharesTimeLock.bind(contractAddress);
     let maxLockDuration = sharesTimeLock.maxLockDuration();
 
@@ -119,6 +161,6 @@ export class ShareTimeLockHelper {
     // saving lock entity...
     lock.save();
 
-    return <Lock>lock;         
+    return [<Lock>lock, <Lock>newLock];         
   }
 }
