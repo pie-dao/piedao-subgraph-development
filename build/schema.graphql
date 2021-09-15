@@ -1,11 +1,22 @@
 type GlobalStat @entity {
   id: ID!,
-  locksCounter: BigInt!
+  depositedLocksCounter: BigInt!
+  depositedLocksValue: BigInt!
+  withdrawnLocksCounter: BigInt!
+  withdrawnLocksValue: BigInt!
+  ejectedLocksCounter: BigInt!
+  ejectedLocksValue: BigInt!
+  boostedLocksCounter: BigInt!
+  boostedLocksValue: BigInt!
+  locksDuration: BigInt!
+  totalStaked: BigInt!
+  veTokenTotalSupply: BigInt!
 }
 
 type Staker @entity {
   id: ID!
   accountLocks: [Lock!]! @derivedFrom(field: "staker")
+  accountRewards: [Reward!]! @derivedFrom(field: "staker")
   totalStaked: BigInt!
   veTokenTotalSupply: BigInt!
   accountVeTokenBalance: BigInt!
@@ -13,6 +24,20 @@ type Staker @entity {
   accountWithdrawnRewards: BigInt!
   accountDepositTokenBalance: BigInt!
   accountDepositTokenAllowance: BigInt!
+}
+
+type StakersTracker @entity {
+  id: ID!
+  counter: BigInt!
+  stakers: [String!]!
+}
+
+type Reward @entity {
+  id:  ID!
+  timestamp: BigInt!
+  amount: BigInt!
+  staker: Staker!
+  type: String!
 }
 
 type Lock @entity {
@@ -24,13 +49,6 @@ type Lock @entity {
   staker: Staker!
   withdrawn: Boolean!
   ejected: Boolean!
-  boosted: ID!
+  boosted: Boolean!
+  boostedPointer: ID!
 }
-
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  _src: Bytes! # address
-  _dst: Bytes! # address
-}
-

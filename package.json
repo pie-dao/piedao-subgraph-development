@@ -1,17 +1,16 @@
 {
-  "name": "piedaosubgraphdevelop",
+  "name": "vedough",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chiptuttofuso/piedaosubgraphdevelop",
-    "create-local": "graph create --node http://localhost:8020/ chiptuttofuso/piedaosubgraphdevelop",
-    "remove-local": "graph remove --node http://localhost:8020/ chiptuttofuso/piedaosubgraphdevelop",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 chiptuttofuso/piedaosubgraphdevelop"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pie-dao/vedough",
+    "create-local": "graph create --node http://localhost:8020/ pie-dao/vedough",
+    "remove-local": "graph remove --node http://localhost:8020/ pie-dao/vedough",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 pie-dao/vedough"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.20.1",
-    "@graphprotocol/graph-ts": "0.20.0",
-    "axios": "^0.21.1"
+    "@graphprotocol/graph-cli": "^0.21.1",
+    "@graphprotocol/graph-ts": "^0.20.1"
   }
 }

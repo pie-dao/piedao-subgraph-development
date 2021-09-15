@@ -42,13 +42,103 @@ export class GlobalStat extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get locksCounter(): BigInt {
-    let value = this.get("locksCounter");
+  get depositedLocksCounter(): BigInt {
+    let value = this.get("depositedLocksCounter");
     return value.toBigInt();
   }
 
-  set locksCounter(value: BigInt) {
-    this.set("locksCounter", Value.fromBigInt(value));
+  set depositedLocksCounter(value: BigInt) {
+    this.set("depositedLocksCounter", Value.fromBigInt(value));
+  }
+
+  get depositedLocksValue(): BigInt {
+    let value = this.get("depositedLocksValue");
+    return value.toBigInt();
+  }
+
+  set depositedLocksValue(value: BigInt) {
+    this.set("depositedLocksValue", Value.fromBigInt(value));
+  }
+
+  get withdrawnLocksCounter(): BigInt {
+    let value = this.get("withdrawnLocksCounter");
+    return value.toBigInt();
+  }
+
+  set withdrawnLocksCounter(value: BigInt) {
+    this.set("withdrawnLocksCounter", Value.fromBigInt(value));
+  }
+
+  get withdrawnLocksValue(): BigInt {
+    let value = this.get("withdrawnLocksValue");
+    return value.toBigInt();
+  }
+
+  set withdrawnLocksValue(value: BigInt) {
+    this.set("withdrawnLocksValue", Value.fromBigInt(value));
+  }
+
+  get ejectedLocksCounter(): BigInt {
+    let value = this.get("ejectedLocksCounter");
+    return value.toBigInt();
+  }
+
+  set ejectedLocksCounter(value: BigInt) {
+    this.set("ejectedLocksCounter", Value.fromBigInt(value));
+  }
+
+  get ejectedLocksValue(): BigInt {
+    let value = this.get("ejectedLocksValue");
+    return value.toBigInt();
+  }
+
+  set ejectedLocksValue(value: BigInt) {
+    this.set("ejectedLocksValue", Value.fromBigInt(value));
+  }
+
+  get boostedLocksCounter(): BigInt {
+    let value = this.get("boostedLocksCounter");
+    return value.toBigInt();
+  }
+
+  set boostedLocksCounter(value: BigInt) {
+    this.set("boostedLocksCounter", Value.fromBigInt(value));
+  }
+
+  get boostedLocksValue(): BigInt {
+    let value = this.get("boostedLocksValue");
+    return value.toBigInt();
+  }
+
+  set boostedLocksValue(value: BigInt) {
+    this.set("boostedLocksValue", Value.fromBigInt(value));
+  }
+
+  get locksDuration(): BigInt {
+    let value = this.get("locksDuration");
+    return value.toBigInt();
+  }
+
+  set locksDuration(value: BigInt) {
+    this.set("locksDuration", Value.fromBigInt(value));
+  }
+
+  get totalStaked(): BigInt {
+    let value = this.get("totalStaked");
+    return value.toBigInt();
+  }
+
+  set totalStaked(value: BigInt) {
+    this.set("totalStaked", Value.fromBigInt(value));
+  }
+
+  get veTokenTotalSupply(): BigInt {
+    let value = this.get("veTokenTotalSupply");
+    return value.toBigInt();
+  }
+
+  set veTokenTotalSupply(value: BigInt) {
+    this.set("veTokenTotalSupply", Value.fromBigInt(value));
   }
 }
 
@@ -89,6 +179,15 @@ export class Staker extends Entity {
 
   set accountLocks(value: Array<string>) {
     this.set("accountLocks", Value.fromStringArray(value));
+  }
+
+  get accountRewards(): Array<string> {
+    let value = this.get("accountRewards");
+    return value.toStringArray();
+  }
+
+  set accountRewards(value: Array<string>) {
+    this.set("accountRewards", Value.fromStringArray(value));
   }
 
   get totalStaked(): BigInt {
@@ -152,6 +251,122 @@ export class Staker extends Entity {
 
   set accountDepositTokenAllowance(value: BigInt) {
     this.set("accountDepositTokenAllowance", Value.fromBigInt(value));
+  }
+}
+
+export class StakersTracker extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save StakersTracker entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save StakersTracker entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("StakersTracker", id.toString(), this);
+  }
+
+  static load(id: string): StakersTracker | null {
+    return store.get("StakersTracker", id) as StakersTracker | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get counter(): BigInt {
+    let value = this.get("counter");
+    return value.toBigInt();
+  }
+
+  set counter(value: BigInt) {
+    this.set("counter", Value.fromBigInt(value));
+  }
+
+  get stakers(): Array<string> {
+    let value = this.get("stakers");
+    return value.toStringArray();
+  }
+
+  set stakers(value: Array<string>) {
+    this.set("stakers", Value.fromStringArray(value));
+  }
+}
+
+export class Reward extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Reward entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Reward entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Reward", id.toString(), this);
+  }
+
+  static load(id: string): Reward | null {
+    return store.get("Reward", id) as Reward | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+
+  get staker(): string {
+    let value = this.get("staker");
+    return value.toString();
+  }
+
+  set staker(value: string) {
+    this.set("staker", Value.fromString(value));
+  }
+
+  get type(): string {
+    let value = this.get("type");
+    return value.toString();
+  }
+
+  set type(value: string) {
+    this.set("type", Value.fromString(value));
   }
 }
 
@@ -248,70 +463,21 @@ export class Lock extends Entity {
     this.set("ejected", Value.fromBoolean(value));
   }
 
-  get boosted(): string {
+  get boosted(): boolean {
     let value = this.get("boosted");
+    return value.toBoolean();
+  }
+
+  set boosted(value: boolean) {
+    this.set("boosted", Value.fromBoolean(value));
+  }
+
+  get boostedPointer(): string {
+    let value = this.get("boostedPointer");
     return value.toString();
   }
 
-  set boosted(value: string) {
-    this.set("boosted", Value.fromString(value));
-  }
-}
-
-export class ExampleEntity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save ExampleEntity entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save ExampleEntity entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("ExampleEntity", id.toString(), this);
-  }
-
-  static load(id: string): ExampleEntity | null {
-    return store.get("ExampleEntity", id) as ExampleEntity | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get count(): BigInt {
-    let value = this.get("count");
-    return value.toBigInt();
-  }
-
-  set count(value: BigInt) {
-    this.set("count", Value.fromBigInt(value));
-  }
-
-  get _src(): Bytes {
-    let value = this.get("_src");
-    return value.toBytes();
-  }
-
-  set _src(value: Bytes) {
-    this.set("_src", Value.fromBytes(value));
-  }
-
-  get _dst(): Bytes {
-    let value = this.get("_dst");
-    return value.toBytes();
-  }
-
-  set _dst(value: Bytes) {
-    this.set("_dst", Value.fromBytes(value));
+  set boostedPointer(value: string) {
+    this.set("boostedPointer", Value.fromString(value));
   }
 }
