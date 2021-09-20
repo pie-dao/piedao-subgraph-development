@@ -32,6 +32,12 @@ type StakersTracker @entity {
   stakers: [String!]!
 }
 
+type LocksTracker @entity {
+  id: ID!
+  counter: BigInt!
+  locks: [String!]!
+}
+
 type Reward @entity {
   id:  ID!
   timestamp: BigInt!

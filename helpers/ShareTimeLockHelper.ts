@@ -1,9 +1,10 @@
 import { SharesTimeLock } from "../generated/SharesTimeLock/SharesTimeLock"
-import { Staker, Lock, GlobalStat } from "../generated/schema"
+import { Staker, Lock, GlobalStat, LocksTracker } from "../generated/schema"
 import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
 
 const UNIQUE_STAT_ID = "unique_stats_id";
+const locksTrackerID = "LocksTrackerID";
 
 export class ShareTimeLockHelper {
   constructor() {}
@@ -50,6 +51,20 @@ export class ShareTimeLockHelper {
     }
   }
 
+  static calculateLocksDurationAverage(): BigInt {
+    let locksTracker = this.loadLocksTracker();
+    let locks = locksTracker.locks;
+
+    let locksDuration = BigInt.fromI32(0);
+    
+    for(let k = 0; k < locks.length; k += 1) {
+      let lock = Lock.load(locks[k]);
+      locksDuration = locksDuration.plus(lock.lockDuration);
+    }
+
+    return locksDuration.div(locksTracker.counter);
+  } 
+
   static updateGlobalGlobalStats(staker: Staker, lock: Lock, newLock: Lock, type: string): GlobalStat {  
     // loading stats entity, or creating if it doesn't exist yet...
     let stats = GlobalStat.load(UNIQUE_STAT_ID);
@@ -72,8 +87,7 @@ export class ShareTimeLockHelper {
       if(type == 'deposited') {
         stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
         stats.depositedLocksValue = stats.depositedLocksValue.plus(lock.amount);
-        // TODO: BUG IS HERE, FIX IT!!
-        stats.locksDuration = stats.locksDuration.plus(lock.lockDuration).div(BigInt.fromI32(2));
+        stats.locksDuration = this.calculateLocksDurationAverage();
       } else {
         if(type == 'withdrawn') {
           stats.withdrawnLocksCounter = stats.withdrawnLocksCounter.plus(BigInt.fromI32(1));
@@ -86,8 +100,7 @@ export class ShareTimeLockHelper {
             stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
             stats.boostedLocksCounter = stats.boostedLocksCounter.plus(BigInt.fromI32(1));
             stats.boostedLocksValue = stats.boostedLocksValue.plus(newLock.amount);
-            // TODO: BUG IS HERE, FIX IT!!
-            stats.locksDuration = stats.locksDuration.plus(newLock.lockDuration).div(BigInt.fromI32(2));
+            stats.locksDuration = this.calculateLocksDurationAverage();
           }
         }
       }
@@ -123,9 +136,34 @@ export class ShareTimeLockHelper {
     lock.boostedPointer = null;
 
     // saving lock entity...
-    lock.save();   
+    lock.save();
+
+    // updating the locksTracker entity, to keep our locksIDs always in sync...
+    let locksTracker = this.loadLocksTracker();
+
+    let locks = locksTracker.locks;
+    locks.push(lockEntityId);
+
+    locksTracker.locks = locks;
+    locksTracker.counter = locksTracker.counter.plus(BigInt.fromI32(1));
+    
+    locksTracker.save();
     return <Lock>lock;
   }
+
+  static loadLocksTracker(): LocksTracker {
+    // loading LockTracker entity, or creating if it doesn't exist yet...
+    let locksTracker = LocksTracker.load(locksTrackerID);
+
+    if (locksTracker == null) {
+      locksTracker = new LocksTracker(locksTrackerID);
+      locksTracker.counter = BigInt.fromI32(0);
+      locksTracker.locks = new Array<string>();
+      locksTracker.save();
+    }
+
+    return <LocksTracker>locksTracker;
+  }  
 
   static withdrawLock(lockId: BigInt, owner: string, flagType: String): Lock {
     let lockEntityId = owner + "_" + lockId.toString();

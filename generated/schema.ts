@@ -303,6 +303,55 @@ export class StakersTracker extends Entity {
   }
 }
 
+export class LocksTracker extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save LocksTracker entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save LocksTracker entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("LocksTracker", id.toString(), this);
+  }
+
+  static load(id: string): LocksTracker | null {
+    return store.get("LocksTracker", id) as LocksTracker | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get counter(): BigInt {
+    let value = this.get("counter");
+    return value.toBigInt();
+  }
+
+  set counter(value: BigInt) {
+    this.set("counter", Value.fromBigInt(value));
+  }
+
+  get locks(): Array<string> {
+    let value = this.get("locks");
+    return value.toStringArray();
+  }
+
+  set locks(value: Array<string>) {
+    this.set("locks", Value.fromStringArray(value));
+  }
+}
+
 export class Reward extends Entity {
   constructor(id: string) {
     super();

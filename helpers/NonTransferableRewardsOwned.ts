@@ -1,7 +1,7 @@
 import { Reward, Staker, StakersTracker } from "../generated/schema"
 import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { ShareTimeLockHelper } from "../helpers/ShareTimeLockHelper"
-import { SharesTimeLock } from '../config/contracts';
+import { SharesTimeLock_Address } from '../config/contracts'
 
 const stakersTrackerID = "StakersTrackerID";
 
@@ -9,7 +9,7 @@ export class NonTransferableRewardsOwnedHelper {
   constructor() {}
   
   static updateStakingData(fromAddress: Address): Staker {
-    let sharesTimeLockAddress = <Address> Address.fromHexString(SharesTimeLock);
+    let sharesTimeLockAddress = <Address> Address.fromHexString(SharesTimeLock_Address);
     let staker = ShareTimeLockHelper.updateStakingData(sharesTimeLockAddress, fromAddress);
     return <Staker>staker;   
   }
@@ -29,7 +29,7 @@ export class NonTransferableRewardsOwnedHelper {
   }
 
   static updateAllStakingData(): void {
-    let sharesTimeLockAddress = <Address> Address.fromHexString(SharesTimeLock);
+    let sharesTimeLockAddress = <Address> Address.fromHexString(SharesTimeLock_Address);
     let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
     let stakers = stakersTracker.stakers;
     
