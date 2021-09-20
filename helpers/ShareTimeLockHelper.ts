@@ -57,8 +57,8 @@ export class ShareTimeLockHelper {
     if (stats == null) {
       stats = new GlobalStat(UNIQUE_STAT_ID);
       stats.depositedLocksCounter = type == 'deposited' ? BigInt.fromI32(1) : BigInt.fromI32(0);
-      stats.depositedLocksValue = lock.amount;
-      stats.locksDuration = lock.lockDuration;
+      stats.depositedLocksValue = lock ? lock.amount : BigInt.fromI32(0);
+      stats.locksDuration = lock ? lock.lockDuration : BigInt.fromI32(0);
 
       stats.withdrawnLocksCounter = BigInt.fromI32(0);
       stats.withdrawnLocksValue = BigInt.fromI32(0);
@@ -72,6 +72,7 @@ export class ShareTimeLockHelper {
       if(type == 'deposited') {
         stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
         stats.depositedLocksValue = stats.depositedLocksValue.plus(lock.amount);
+        // TODO: BUG IS HERE, FIX IT!!
         stats.locksDuration = stats.locksDuration.plus(lock.lockDuration).div(BigInt.fromI32(2));
       } else {
         if(type == 'withdrawn') {
@@ -85,6 +86,7 @@ export class ShareTimeLockHelper {
             stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
             stats.boostedLocksCounter = stats.boostedLocksCounter.plus(BigInt.fromI32(1));
             stats.boostedLocksValue = stats.boostedLocksValue.plus(newLock.amount);
+            // TODO: BUG IS HERE, FIX IT!!
             stats.locksDuration = stats.locksDuration.plus(newLock.lockDuration).div(BigInt.fromI32(2));
           }
         }

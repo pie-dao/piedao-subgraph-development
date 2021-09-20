@@ -51,7 +51,7 @@ export function handleClaimedFor(event: ClaimedFor): void {
 }
 
 export function handleApproval(event: Approval): void {
-  NonTransferableRewardsOwnedHelper.updateStakingData(event.transaction.from);
+  // NonTransferableRewardsOwnedHelper.updateStakingData(event.transaction.from);
 }
 
 export function handleTransfer(event: Transfer): void {

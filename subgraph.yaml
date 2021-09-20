@@ -79,32 +79,4 @@ dataSources:
           handler: handleRoleRevoked
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/NonTransferableRewardsOwned.ts
-  - kind: ethereum/contract
-    name: Dough
-    network: mainnet
-    source:
-      address: "0xad32a8e6220741182940c5abf610bde99e737b2d"
-      abi: Dough
-      startBlock: 10840239
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - GlobalStat
-        - Staker
-        - Lock
-      abis:
-        - name: SharesTimeLock
-          file: ./abis/SharesTimeLock.json        
-        - name: Dough
-          file: ./abis/Dough.json
-      eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: Delegate(indexed address,indexed address)
-          handler: handleDelegate
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/Dough.ts      
+      file: ./src/NonTransferableRewardsOwned.ts    

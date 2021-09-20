@@ -57,13 +57,13 @@ export function handleBoostedToMax(event: BoostedToMax): void {
 }
 
 export function handleMinLockAmountChanged(event: MinLockAmountChanged): void {
-  ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
+  //ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
-  ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
+  //ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
 }
 
 export function handleWhitelistedChanged(event: WhitelistedChanged): void {
-  ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
+  //ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
 }
