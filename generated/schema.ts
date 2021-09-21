@@ -114,22 +114,22 @@ export class GlobalStat extends Entity {
     this.set("boostedLocksValue", Value.fromBigInt(value));
   }
 
-  get locksDuration(): BigInt {
-    let value = this.get("locksDuration");
+  get averageTimeLock(): BigInt {
+    let value = this.get("averageTimeLock");
     return value.toBigInt();
   }
 
-  set locksDuration(value: BigInt) {
-    this.set("locksDuration", Value.fromBigInt(value));
+  set averageTimeLock(value: BigInt) {
+    this.set("averageTimeLock", Value.fromBigInt(value));
   }
 
-  get totalStaked(): BigInt {
-    let value = this.get("totalStaked");
+  get totalDoughStaked(): BigInt {
+    let value = this.get("totalDoughStaked");
     return value.toBigInt();
   }
 
-  set totalStaked(value: BigInt) {
-    this.set("totalStaked", Value.fromBigInt(value));
+  set totalDoughStaked(value: BigInt) {
+    this.set("totalDoughStaked", Value.fromBigInt(value));
   }
 
   get veTokenTotalSupply(): BigInt {
@@ -139,6 +139,24 @@ export class GlobalStat extends Entity {
 
   set veTokenTotalSupply(value: BigInt) {
     this.set("veTokenTotalSupply", Value.fromBigInt(value));
+  }
+
+  get stakersCounter(): BigInt {
+    let value = this.get("stakersCounter");
+    return value.toBigInt();
+  }
+
+  set stakersCounter(value: BigInt) {
+    this.set("stakersCounter", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 }
 
@@ -190,24 +208,6 @@ export class Staker extends Entity {
     this.set("accountRewards", Value.fromStringArray(value));
   }
 
-  get totalStaked(): BigInt {
-    let value = this.get("totalStaked");
-    return value.toBigInt();
-  }
-
-  set totalStaked(value: BigInt) {
-    this.set("totalStaked", Value.fromBigInt(value));
-  }
-
-  get veTokenTotalSupply(): BigInt {
-    let value = this.get("veTokenTotalSupply");
-    return value.toBigInt();
-  }
-
-  set veTokenTotalSupply(value: BigInt) {
-    this.set("veTokenTotalSupply", Value.fromBigInt(value));
-  }
-
   get accountVeTokenBalance(): BigInt {
     let value = this.get("accountVeTokenBalance");
     return value.toBigInt();
@@ -233,24 +233,6 @@ export class Staker extends Entity {
 
   set accountWithdrawnRewards(value: BigInt) {
     this.set("accountWithdrawnRewards", Value.fromBigInt(value));
-  }
-
-  get accountDepositTokenBalance(): BigInt {
-    let value = this.get("accountDepositTokenBalance");
-    return value.toBigInt();
-  }
-
-  set accountDepositTokenBalance(value: BigInt) {
-    this.set("accountDepositTokenBalance", Value.fromBigInt(value));
-  }
-
-  get accountDepositTokenAllowance(): BigInt {
-    let value = this.get("accountDepositTokenAllowance");
-    return value.toBigInt();
-  }
-
-  set accountDepositTokenAllowance(value: BigInt) {
-    this.set("accountDepositTokenAllowance", Value.fromBigInt(value));
   }
 }
 
@@ -349,6 +331,64 @@ export class LocksTracker extends Entity {
 
   set locks(value: Array<string>) {
     this.set("locks", Value.fromStringArray(value));
+  }
+}
+
+export class GlobalStatsTracker extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save GlobalStatsTracker entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save GlobalStatsTracker entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("GlobalStatsTracker", id.toString(), this);
+  }
+
+  static load(id: string): GlobalStatsTracker | null {
+    return store.get("GlobalStatsTracker", id) as GlobalStatsTracker | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get counter(): BigInt {
+    let value = this.get("counter");
+    return value.toBigInt();
+  }
+
+  set counter(value: BigInt) {
+    this.set("counter", Value.fromBigInt(value));
+  }
+
+  get latest(): string {
+    let value = this.get("latest");
+    return value.toString();
+  }
+
+  set latest(value: string) {
+    this.set("latest", Value.fromString(value));
+  }
+
+  get globalStats(): Array<string> {
+    let value = this.get("globalStats");
+    return value.toStringArray();
+  }
+
+  set globalStats(value: Array<string>) {
+    this.set("globalStats", Value.fromStringArray(value));
   }
 }
 

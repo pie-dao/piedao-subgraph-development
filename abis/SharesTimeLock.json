@@ -305,7 +305,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "totalStaked",
+            "name": "totalDoughStaked",
             "type": "uint256"
           },
           {

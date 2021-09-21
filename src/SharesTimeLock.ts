@@ -21,7 +21,7 @@ export function handleDeposited(event: Deposited): void {
     staker.id,
     false);
 
-  ShareTimeLockHelper.updateGlobalGlobalStats(staker, lock, null, 'deposited');
+  ShareTimeLockHelper.updateGlobalGlobalStats(event.block.timestamp, lock, null, 'deposited');
 }
 
 export function handleEjected(event: Ejected): void {
@@ -31,7 +31,7 @@ export function handleEjected(event: Ejected): void {
     "ejected");
 
     let staker = ShareTimeLockHelper.updateStakingData(event.address, event.params.owner);
-    ShareTimeLockHelper.updateGlobalGlobalStats(staker, lock, null, 'ejected');
+    ShareTimeLockHelper.updateGlobalGlobalStats(event.block.timestamp, lock, null, 'ejected');
 }
 
 export function handleWithdrawn(event: Withdrawn): void {
@@ -41,7 +41,7 @@ export function handleWithdrawn(event: Withdrawn): void {
     "withdrawn");
 
     let staker = ShareTimeLockHelper.updateStakingData(event.address, event.params.owner);    
-    ShareTimeLockHelper.updateGlobalGlobalStats(staker, lock, null, 'withdrawn');
+    ShareTimeLockHelper.updateGlobalGlobalStats(event.block.timestamp, lock, null, 'withdrawn');
 }
 
 export function handleBoostedToMax(event: BoostedToMax): void {
@@ -53,17 +53,11 @@ export function handleBoostedToMax(event: BoostedToMax): void {
     event.block.timestamp);  
 
     let staker = ShareTimeLockHelper.updateStakingData(event.address, event.params.owner);    
-    ShareTimeLockHelper.updateGlobalGlobalStats(staker, locks[0], locks[1], 'boosted');
+    ShareTimeLockHelper.updateGlobalGlobalStats(event.block.timestamp, locks[0], locks[1], 'boosted');
 }
 
-export function handleMinLockAmountChanged(event: MinLockAmountChanged): void {
-  //ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
-}
+export function handleMinLockAmountChanged(event: MinLockAmountChanged): void {}
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {
-  //ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
-}
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
-export function handleWhitelistedChanged(event: WhitelistedChanged): void {
-  //ShareTimeLockHelper.updateStakingData(event.address, event.transaction.from);
-}
+export function handleWhitelistedChanged(event: WhitelistedChanged): void {}

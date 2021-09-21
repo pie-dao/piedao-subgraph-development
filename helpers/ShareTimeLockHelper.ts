@@ -1,9 +1,12 @@
 import { SharesTimeLock } from "../generated/SharesTimeLock/SharesTimeLock"
-import { Staker, Lock, GlobalStat, LocksTracker } from "../generated/schema"
+import { Dough } from "../generated/Dough/Dough"
+import { NonTransferableRewardsOwned } from "../generated/NonTransferableRewardsOwned/NonTransferableRewardsOwned"
+import { Staker, Lock, GlobalStat, LocksTracker, GlobalStatsTracker } from "../generated/schema"
 import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
+import { SharesTimeLock_Address, NonTransferableRewardsOwned_Address, Dough_Address } from '../config/contracts'
 
-const UNIQUE_STAT_ID = "unique_stats_id";
+const globalStatsID = "GlobalStatsID";
 const locksTrackerID = "LocksTrackerID";
 
 export class ShareTimeLockHelper {
@@ -38,13 +41,9 @@ export class ShareTimeLockHelper {
       }
     
       // refilling the staked entity...
-      staker.totalStaked = stakingData.totalStaked;
-      staker.veTokenTotalSupply = stakingData.veTokenTotalSupply;
       staker.accountVeTokenBalance = stakingData.accountVeTokenBalance;
       staker.accountWithdrawableRewards = stakingData.accountWithdrawableRewards;
       staker.accountWithdrawnRewards = stakingData.accountWithdrawnRewards;
-      staker.accountDepositTokenBalance = stakingData.accountDepositTokenBalance;
-      staker.accountDepositTokenAllowance = stakingData.accountDepositTokenAllowance;
       staker.save();
       
       return <Staker>staker;
@@ -55,29 +54,56 @@ export class ShareTimeLockHelper {
     let locksTracker = this.loadLocksTracker();
     let locks = locksTracker.locks;
 
-    let locksDuration = BigInt.fromI32(0);
+    let averageTimeLock = BigInt.fromI32(0);
     let counter = 0;
     
     for(let k = 0; k < locks.length; k += 1) {
       let lock = Lock.load(locks[k]);
       if(lock.boostedPointer == '') {
         counter++;
-        locksDuration = locksDuration.plus(lock.lockDuration);
+        averageTimeLock = averageTimeLock.plus(lock.lockDuration);
       }
     }
 
-    return locksDuration.div(BigInt.fromI32(counter));
+    return averageTimeLock.div(BigInt.fromI32(counter));
   } 
 
-  static updateGlobalGlobalStats(staker: Staker, lock: Lock, newLock: Lock, type: string): GlobalStat {  
-    // loading stats entity, or creating if it doesn't exist yet...
-    let stats = GlobalStat.load(UNIQUE_STAT_ID);
+  static loadGlobalStatsTracker(id: string): GlobalStatsTracker {
+    let globalStatsTracker = GlobalStatsTracker.load(globalStatsID);
+
+    if (globalStatsTracker == null) {
+      globalStatsTracker = new GlobalStatsTracker(globalStatsID);
+      globalStatsTracker.counter = BigInt.fromI32(0);
+      globalStatsTracker.globalStats = new Array<string>();
+      globalStatsTracker.latest = id;
+      globalStatsTracker.save();
+    }
+
+    return <GlobalStatsTracker>globalStatsTracker;
+  } 
+
+  static updateGlobalStatsTracker(globalStatsTracker: GlobalStatsTracker, latest: string): GlobalStatsTracker {
+    let globalStats = globalStatsTracker.globalStats;
+    globalStats.push(latest);
+
+    globalStatsTracker.globalStats = globalStats;
+    globalStatsTracker.latest = latest;
+    globalStatsTracker.counter = globalStatsTracker.counter.plus(BigInt.fromI32(1));
     
-    if (stats == null) {
-      stats = new GlobalStat(UNIQUE_STAT_ID);
-      stats.depositedLocksCounter = type == 'deposited' ? BigInt.fromI32(1) : BigInt.fromI32(0);
-      stats.depositedLocksValue = lock ? lock.amount : BigInt.fromI32(0);
-      stats.locksDuration = lock ? lock.lockDuration : BigInt.fromI32(0);
+    globalStatsTracker.save();  
+    return <GlobalStatsTracker>globalStatsTracker;  
+  }
+
+  static updateGlobalGlobalStats(timestamp: BigInt, lock: Lock, newLock: Lock, type: string): GlobalStat {  
+    let globalStatsTracker = this.loadGlobalStatsTracker(timestamp.toString());
+
+    let previous_stats = GlobalStat.load(globalStatsTracker.latest);
+    let stats = new GlobalStat(timestamp.toString());
+    
+    if (previous_stats == null) {
+      stats.depositedLocksCounter = BigInt.fromI32(0);
+      stats.depositedLocksValue = BigInt.fromI32(0);
+      stats.averageTimeLock = BigInt.fromI32(0);
 
       stats.withdrawnLocksCounter = BigInt.fromI32(0);
       stats.withdrawnLocksValue = BigInt.fromI32(0);
@@ -88,31 +114,55 @@ export class ShareTimeLockHelper {
       stats.boostedLocksCounter = BigInt.fromI32(0);
       stats.boostedLocksValue = BigInt.fromI32(0);
     } else {
-      if(type == 'deposited') {
-        stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
-        stats.depositedLocksValue = stats.depositedLocksValue.plus(lock.amount);
-        stats.locksDuration = this.calculateLocksDurationAverage();
-      } else {
-        if(type == 'withdrawn') {
-          stats.withdrawnLocksCounter = stats.withdrawnLocksCounter.plus(BigInt.fromI32(1));
-          stats.withdrawnLocksValue = stats.withdrawnLocksValue.plus(lock.amount);
-        } else {
-          if(type == 'ejected') {
-            stats.ejectedLocksCounter = stats.ejectedLocksCounter.plus(BigInt.fromI32(1));
-            stats.ejectedLocksValue = stats.ejectedLocksValue.plus(lock.amount);
-          } else if(type == 'boosted') {
-            stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
-            stats.boostedLocksCounter = stats.boostedLocksCounter.plus(BigInt.fromI32(1));
-            stats.boostedLocksValue = stats.boostedLocksValue.plus(newLock.amount);
-            stats.locksDuration = this.calculateLocksDurationAverage();
-          }
-        }
-      }
+      stats.depositedLocksCounter = previous_stats.depositedLocksCounter;
+      stats.depositedLocksValue = previous_stats.depositedLocksValue;
+      stats.averageTimeLock = previous_stats.averageTimeLock;
+
+      stats.withdrawnLocksCounter = previous_stats.withdrawnLocksCounter;
+      stats.withdrawnLocksValue = previous_stats.withdrawnLocksValue;
+
+      stats.ejectedLocksCounter = previous_stats.ejectedLocksCounter;
+      stats.ejectedLocksValue = previous_stats.ejectedLocksValue;
+
+      stats.boostedLocksCounter = previous_stats.boostedLocksCounter;
+      stats.boostedLocksValue = previous_stats.boostedLocksValue;      
     }
 
-    // those values are always updated, coming from onChain call, so we can just override them...
-    stats.totalStaked = staker.totalStaked;
-    stats.veTokenTotalSupply = staker.veTokenTotalSupply;    
+    if(type == 'deposited') {
+      stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
+      stats.depositedLocksValue = stats.depositedLocksValue.plus(lock.amount);
+      stats.averageTimeLock = this.calculateLocksDurationAverage();
+    } else {
+      if(type == 'withdrawn') {
+        stats.withdrawnLocksCounter = stats.withdrawnLocksCounter.plus(BigInt.fromI32(1));
+        stats.withdrawnLocksValue = stats.withdrawnLocksValue.plus(lock.amount);
+      } else {
+        if(type == 'ejected') {
+          stats.ejectedLocksCounter = stats.ejectedLocksCounter.plus(BigInt.fromI32(1));
+          stats.ejectedLocksValue = stats.ejectedLocksValue.plus(lock.amount);
+        } else if(type == 'boosted') {
+          stats.depositedLocksCounter = stats.depositedLocksCounter.plus(BigInt.fromI32(1));
+          stats.boostedLocksCounter = stats.boostedLocksCounter.plus(BigInt.fromI32(1));
+          stats.boostedLocksValue = stats.boostedLocksValue.plus(newLock.amount);
+          stats.averageTimeLock = this.calculateLocksDurationAverage();
+        }
+      }
+    }    
+
+    let DoughAddress = <Address> Address.fromHexString(Dough_Address);
+    let DoughContract = Dough.bind(DoughAddress);
+    stats.totalDoughStaked = DoughContract.balanceOf(<Address> Address.fromHexString(SharesTimeLock_Address));
+
+    let veDoughAddress = <Address> Address.fromHexString(NonTransferableRewardsOwned_Address);
+    let veDoughContract = NonTransferableRewardsOwned.bind(veDoughAddress);
+    stats.veTokenTotalSupply = veDoughContract.totalSupply();
+
+    let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
+    stats.stakersCounter = stakersTracker.counter;
+
+    stats.timestamp = timestamp;
+
+    this.updateGlobalStatsTracker(globalStatsTracker, timestamp.toString());
 
     // saving stats entity...
     stats.save();    

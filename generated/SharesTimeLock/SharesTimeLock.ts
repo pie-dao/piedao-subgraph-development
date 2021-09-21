@@ -185,7 +185,7 @@ export class Withdrawn__Params {
 }
 
 export class SharesTimeLock__getStakingDataResultDataStruct extends ethereum.Tuple {
-  get totalStaked(): BigInt {
+  get totalDoughStaked(): BigInt {
     return this[0].toBigInt();
   }
 

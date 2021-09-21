@@ -8,22 +8,20 @@ type GlobalStat @entity {
   ejectedLocksValue: BigInt!
   boostedLocksCounter: BigInt!
   boostedLocksValue: BigInt!
-  locksDuration: BigInt!
-  totalStaked: BigInt!
+  averageTimeLock: BigInt!
+  totalDoughStaked: BigInt!
   veTokenTotalSupply: BigInt!
+  stakersCounter: BigInt!
+  timestamp: BigInt!
 }
 
 type Staker @entity {
   id: ID!
   accountLocks: [Lock!]! @derivedFrom(field: "staker")
   accountRewards: [Reward!]! @derivedFrom(field: "staker")
-  totalStaked: BigInt!
-  veTokenTotalSupply: BigInt!
   accountVeTokenBalance: BigInt!
   accountWithdrawableRewards: BigInt!
   accountWithdrawnRewards: BigInt!
-  accountDepositTokenBalance: BigInt!
-  accountDepositTokenAllowance: BigInt!
 }
 
 type StakersTracker @entity {
@@ -36,6 +34,13 @@ type LocksTracker @entity {
   id: ID!
   counter: BigInt!
   locks: [String!]!
+}
+
+type GlobalStatsTracker @entity {
+  id: ID!
+  counter: BigInt!
+  latest: String!
+  globalStats: [String!]!
 }
 
 type Reward @entity {

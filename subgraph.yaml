@@ -18,6 +18,8 @@ dataSources:
         - Staker
         - Lock
       abis:
+        - name: Dough
+          file: ./abis/Dough.json        
         - name: SharesTimeLock
           file: ./abis/SharesTimeLock.json
         - name: NonTransferableRewardsOwned
@@ -54,6 +56,8 @@ dataSources:
         - Staker
         - Lock
       abis:
+        - name: Dough
+          file: ./abis/Dough.json        
         - name: SharesTimeLock
           file: ./abis/SharesTimeLock.json        
         - name: NonTransferableRewardsOwned
@@ -79,4 +83,37 @@ dataSources:
           handler: handleRoleRevoked
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/NonTransferableRewardsOwned.ts    
+      file: ./src/NonTransferableRewardsOwned.ts
+  - kind: ethereum/contract
+    name: Dough
+    network: mainnet
+    source:
+      address: "0xad32a8e6220741182940c5abf610bde99e737b2d"
+      abi: Dough
+      startBlock: 13229400
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - ClaimedTokens
+        - Transfer
+        - NewCloneToken
+        - Approval
+      abis:
+        - name: Dough
+          file: ./abis/Dough.json
+        - name: SharesTimeLock
+          file: ./abis/SharesTimeLock.json        
+        - name: NonTransferableRewardsOwned
+          file: ./abis/NonTransferableRewardsOwned.json          
+      eventHandlers:
+        - event: ClaimedTokens(indexed address,indexed address,uint256)
+          handler: handleClaimedTokens
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: NewCloneToken(indexed address,uint256)
+          handler: handleNewCloneToken
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/Dough.ts       

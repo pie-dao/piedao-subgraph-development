@@ -5,6 +5,7 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pie-dao/vedough",
+    "deploy-dev": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ chiptuttofuso/piedaosubgraphdevelop",
     "create-local": "graph create --node http://localhost:8020/ pie-dao/vedough",
     "remove-local": "graph remove --node http://localhost:8020/ pie-dao/vedough",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 pie-dao/vedough"
