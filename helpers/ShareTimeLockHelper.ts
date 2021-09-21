@@ -56,13 +56,17 @@ export class ShareTimeLockHelper {
     let locks = locksTracker.locks;
 
     let locksDuration = BigInt.fromI32(0);
+    let counter = 0;
     
     for(let k = 0; k < locks.length; k += 1) {
       let lock = Lock.load(locks[k]);
-      locksDuration = locksDuration.plus(lock.lockDuration);
+      if(lock.boostedPointer == '') {
+        counter++;
+        locksDuration = locksDuration.plus(lock.lockDuration);
+      }
     }
 
-    return locksDuration.div(locksTracker.counter);
+    return locksDuration.div(BigInt.fromI32(counter));
   } 
 
   static updateGlobalGlobalStats(staker: Staker, lock: Lock, newLock: Lock, type: string): GlobalStat {  
