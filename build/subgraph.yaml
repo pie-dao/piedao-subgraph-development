@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: SharesTimeLock
-    network: rinkeby
+    network: mainnet
     source:
-      address: "0x441658De8ebCB25d8D320Bd5C1Abb314b0CE195E"
+      address: "0x6Bd0D8c8aD8D3F1f97810d5Cc57E9296db73DC45"
       abi: SharesTimeLock
-      startBlock: 8969124
+      startBlock: 13229400
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -42,11 +42,11 @@ dataSources:
       file: SharesTimeLock/SharesTimeLock.wasm
   - kind: ethereum/contract
     name: NonTransferableRewardsOwned
-    network: rinkeby
+    network: mainnet
     source:
-      address: "0xA4D4587480a61809Cbdee20F8E0d9a5c4A031d72"
+      address: "0xE6136F2e90EeEA7280AE5a0a8e6F48Fb222AF945"
       abi: NonTransferableRewardsOwned
-      startBlock: 8969123
+      startBlock: 13229395
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -86,11 +86,11 @@ dataSources:
       file: NonTransferableRewardsOwned/NonTransferableRewardsOwned.wasm
   - kind: ethereum/contract
     name: Dough
-    network: rinkeby
+    network: mainnet
     source:
-      address: "0x6503e51056C881Ebf463207f8E969fA45A1E0747"
+      address: "0xad32a8e6220741182940c5abf610bde99e737b2d"
       abi: Dough
-      startBlock: 8728693
+      startBlock: 13229400
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

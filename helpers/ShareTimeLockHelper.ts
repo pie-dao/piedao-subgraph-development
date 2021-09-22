@@ -12,8 +12,9 @@ const locksTrackerID = "LocksTrackerID";
 export class ShareTimeLockHelper {
   constructor() {}
 
-  static updateStakingData(contractAddress: Address, fromAddress: Address): Staker {
+  static updateStakingData(fromAddress: Address): Staker {
     // loading the contract, and calling the getStakingData function...
+    let contractAddress = <Address> Address.fromHexString(SharesTimeLock_Address);
     let sharesTimeLock = SharesTimeLock.bind(contractAddress);
     let callResult = sharesTimeLock.try_getStakingData(fromAddress);
 

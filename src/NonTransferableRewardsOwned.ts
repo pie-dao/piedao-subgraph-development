@@ -11,6 +11,7 @@ import {
   Transfer
 } from "../generated/NonTransferableRewardsOwned/NonTransferableRewardsOwned"
 import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
+import { ShareTimeLockHelper } from "../helpers/ShareTimeLockHelper"
 import { Address, log } from "@graphprotocol/graph-ts"
 
 export function handleRewardsWithdrawn(event: RewardsWithdrawn): void {
@@ -21,7 +22,7 @@ export function handleRewardsWithdrawn(event: RewardsWithdrawn): void {
     event.params.by.toHex(),
     "claimed");
 
-    NonTransferableRewardsOwnedHelper.updateStakingData(event.params.by);
+    ShareTimeLockHelper.updateStakingData(event.params.by);
 }
 
 export function handleRewardsRedistributed(event: RewardsRedistributed): void {
@@ -50,12 +51,10 @@ export function handleClaimedFor(event: ClaimedFor): void {
   log.info("----- handleClaimedFor -----", []);
 }
 
-export function handleApproval(event: Approval): void {
-  // NonTransferableRewardsOwnedHelper.updateStakingData(event.transaction.from);
-}
+export function handleApproval(event: Approval): void {}
 
 export function handleTransfer(event: Transfer): void {
-  NonTransferableRewardsOwnedHelper.updateStakingData(event.transaction.from);
+  ShareTimeLockHelper.updateStakingData(event.transaction.from);
 }
 
 /*
