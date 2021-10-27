@@ -570,3 +570,70 @@ export class Lock extends Entity {
     this.set("boostedPointer", Value.fromString(value));
   }
 }
+
+export class Delegate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Delegate entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Delegate entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Delegate", id.toString(), this);
+  }
+
+  static load(id: string): Delegate | null {
+    return store.get("Delegate", id) as Delegate | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get delegator(): Bytes {
+    let value = this.get("delegator");
+    return value.toBytes();
+  }
+
+  set delegator(value: Bytes) {
+    this.set("delegator", Value.fromBytes(value));
+  }
+
+  get delegate(): Bytes {
+    let value = this.get("delegate");
+    return value.toBytes();
+  }
+
+  set delegate(value: Bytes) {
+    this.set("delegate", Value.fromBytes(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+}

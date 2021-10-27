@@ -63,3 +63,11 @@ type Lock @entity {
   boosted: Boolean!
   boostedPointer: ID!
 }
+
+type Delegate @entity {
+  id:  ID!
+  delegator: Bytes!
+  delegate: Bytes!
+  timestamp: BigInt!
+  block: BigInt!
+}
