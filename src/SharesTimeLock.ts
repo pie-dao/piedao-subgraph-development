@@ -11,7 +11,7 @@ import { ShareTimeLockHelper } from "../helpers/ShareTimeLockHelper"
 
 export function handleDeposited(event: Deposited): void {
   // updating stakingData infos into Staker entity...
-  let staker = ShareTimeLockHelper.updateStakingData(event.transaction.from);
+  let staker = ShareTimeLockHelper.updateStakingData(event.params.owner);
 
   let lock = ShareTimeLockHelper.depositLock(
     event.params.lockId, 
