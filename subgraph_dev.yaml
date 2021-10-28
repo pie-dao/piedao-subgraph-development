@@ -119,9 +119,9 @@ dataSources:
       file: ./src/Dough.ts   
   - kind: ethereum/contract
     name: DoughStakingDelegateRegistry
-    network: mainnet
+    network: rinkeby
     source:
-      address: "0x9684C4A31246405BC2C8002494268e81D7623b4f"
+      address: "0x6876f66f3356b4037798b354a079a6b499b3cf5b"
       abi: DoughStakingDelegateRegistry
       startBlock: 13499161
     mapping:
@@ -142,4 +142,4 @@ dataSources:
           handler: handleOwnershipChange
         - event: SetDelegate(indexed address,indexed address)
           handler: handleSetDelegate
-      file: ./src/DoughStakingDelegateRegistry.ts          
+      file: ./src/DoughStakingDelegateRegistry.ts
