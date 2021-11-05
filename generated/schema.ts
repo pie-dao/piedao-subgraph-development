@@ -440,6 +440,15 @@ export class Reward extends Entity {
     this.set("amount", Value.fromBigInt(value));
   }
 
+  get account(): Bytes {
+    let value = this.get("account");
+    return value.toBytes();
+  }
+
+  set account(value: Bytes) {
+    this.set("account", Value.fromBytes(value));
+  }
+
   get staker(): string {
     let value = this.get("staker");
     return value.toString();

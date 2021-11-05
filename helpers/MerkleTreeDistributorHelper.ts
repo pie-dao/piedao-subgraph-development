@@ -35,7 +35,7 @@ export class MerkleTreeDistributorHelper {
     hashID: string, 
     timestamp: BigInt, 
     amount: BigInt, 
-    staker: string, 
+    staker: Address, 
     rewardToken: Address, 
     type: string,
     windowIndex: BigInt, 
@@ -51,7 +51,8 @@ export class MerkleTreeDistributorHelper {
     // filling the Reward entity...
     reward.timestamp = timestamp;
     reward.amount = amount;
-    reward.staker = staker;
+    reward.staker = staker.toHex();
+    reward.account = staker;
     reward.type = type;
     reward.rewardToken = rewardToken;
     reward.windowIndex = windowIndex;

@@ -143,3 +143,40 @@ dataSources:
         - event: SetDelegate(indexed address,indexed address)
           handler: handleSetDelegate
       file: ./src/DoughStakingDelegateRegistry.ts
+  - kind: ethereum/contract
+    name: MerkleTreeDistributor
+    network: goerli
+    source:
+      address: "0x8F5749c1dDDE022bB7444E74409Ce10398817DF0"
+      abi: MerkleTreeDistributor
+      startBlock: 5796499
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Claimed
+        - CreatedWindow
+        - DeleteWindow
+        - LockSet
+        - OwnershipTransferred
+        - WithdrawRewards
+      abis:
+        - name: SharesTimeLock
+          file: ./abis/SharesTimeLock.json  
+        - name: MerkleTreeDistributor
+          file: ./abis/MerkleTreeDistributor.json
+      eventHandlers:
+        - event: Claimed(indexed address,uint256,indexed address,uint256,uint256,indexed address)
+          handler: handleClaimed
+        - event: CreatedWindow(indexed uint256,uint256,indexed address,address)
+          handler: handleCreatedWindow
+        - event: DeleteWindow(indexed uint256,address)
+          handler: handleDeleteWindow
+        - event: LockSet(indexed uint256)
+          handler: handleLockSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: WithdrawRewards(indexed address,uint256,indexed address)
+          handler: handleWithdrawRewards
+      file: ./src/MerkleTreeDistributor.ts           

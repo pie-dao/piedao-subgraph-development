@@ -47,6 +47,7 @@ type Reward @entity {
   id:  ID!
   timestamp: BigInt!
   amount: BigInt!
+  account: Bytes!
   staker: Staker!
   rewardToken: Bytes!
   windowIndex: BigInt!

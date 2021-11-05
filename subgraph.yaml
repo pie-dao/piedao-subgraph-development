@@ -162,6 +162,8 @@ dataSources:
         - OwnershipTransferred
         - WithdrawRewards
       abis:
+        - name: SharesTimeLock
+          file: ./abis/SharesTimeLock.json      
         - name: MerkleTreeDistributor
           file: ./abis/MerkleTreeDistributor.json
       eventHandlers:
