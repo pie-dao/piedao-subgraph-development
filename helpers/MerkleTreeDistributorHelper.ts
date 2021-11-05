@@ -1,10 +1,10 @@
-import { Reward, Staker, StakersTracker } from "../generated/schema"
+import { Reward, StakersTracker } from "../generated/schema"
 import { Address, BigInt, log } from "@graphprotocol/graph-ts"
-import { ShareTimeLockHelper } from "../helpers/ShareTimeLockHelper"
+import { ShareTimeLockHelper } from "./ShareTimeLockHelper"
 
 const stakersTrackerID = "StakersTrackerID";
 
-export class NonTransferableRewardsOwnedHelper {
+export class MerkleTreeDistributorHelper {
   constructor() {}
 
   static loadStakersTracker(): StakersTracker {
@@ -22,7 +22,7 @@ export class NonTransferableRewardsOwnedHelper {
   }
 
   static updateAllStakingData(): void {
-    let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
+    let stakersTracker = MerkleTreeDistributorHelper.loadStakersTracker();
     let stakers = stakersTracker.stakers;
     
     for(let i = 0; i < stakers.length; i += 1) {
@@ -31,7 +31,16 @@ export class NonTransferableRewardsOwnedHelper {
     };
   }  
 
-  static saveRewards(hashID: string, timestamp: BigInt, amount: BigInt, by: string, type: string): Reward {
+  static saveRewards(
+    hashID: string, 
+    timestamp: BigInt, 
+    amount: BigInt, 
+    staker: Address, 
+    rewardToken: Address, 
+    type: string,
+    windowIndex: BigInt, 
+    accountIndex: BigInt, 
+    ): Reward {
     // loading Reward entity, or creating if it doesn't exist yet...
     let reward = Reward.load(hashID);
 
@@ -42,8 +51,12 @@ export class NonTransferableRewardsOwnedHelper {
     // filling the Reward entity...
     reward.timestamp = timestamp;
     reward.amount = amount;
-    reward.staker = by;
+    reward.staker = staker.toHex();
+    reward.account = staker;
     reward.type = type;
+    reward.rewardToken = rewardToken;
+    reward.windowIndex = windowIndex;
+    reward.accountIndex = accountIndex;
 
     // saving lock entity...
     reward.save();   
