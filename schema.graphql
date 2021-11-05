@@ -48,7 +48,21 @@ type Reward @entity {
   timestamp: BigInt!
   amount: BigInt!
   staker: Staker!
+  rewardToken: Bytes!
+  windowIndex: BigInt!
+  accountIndex: BigInt!
   type: String!
+}
+
+type RewardDistribution @entity {
+  id:  ID!
+  transaction: String!
+  timestamp: BigInt!
+  block: BigInt!
+  windowIndex: BigInt!
+  rewardsDeposited: BigInt!
+  rewardToken: Bytes!
+  owner: Bytes!
 }
 
 type Lock @entity {

@@ -1,6 +1,5 @@
 import { Delegate } from "../generated/schema"
-import { Address, BigInt, store, log } from "@graphprotocol/graph-ts"
-import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
+import { Address, BigInt, store } from "@graphprotocol/graph-ts"
 
 export class DoughStakingDelegateRegistryHelper {
   constructor() {}

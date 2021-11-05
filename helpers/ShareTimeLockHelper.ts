@@ -3,7 +3,7 @@ import { Dough } from "../generated/Dough/Dough"
 import { NonTransferableRewardsOwned } from "../generated/NonTransferableRewardsOwned/NonTransferableRewardsOwned"
 import { Staker, Lock, GlobalStat, LocksTracker, GlobalStatsTracker } from "../generated/schema"
 import { Address, BigInt, log } from "@graphprotocol/graph-ts"
-import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
+import { MerkleTreeDistributorHelper } from "./MerkleTreeDistributorHelper"
 import { SharesTimeLock_Address, NonTransferableRewardsOwned_Address, Dough_Address } from '../config/contracts'
 
 const globalStatsID = "GlobalStatsID";
@@ -12,7 +12,7 @@ const locksTrackerID = "LocksTrackerID";
 export class ShareTimeLockHelper {
   constructor() {}
 
-  static updateStakingData(fromAddress: Address): Staker {
+  static updateStakingData(fromAddress: Address, accountWithdrawnRewards: BigInt = BigInt.fromI32(0)): Staker {
     // loading the contract, and calling the getStakingData function...
     let contractAddress = <Address> Address.fromHexString(SharesTimeLock_Address);
     let sharesTimeLock = SharesTimeLock.bind(contractAddress);
@@ -30,7 +30,7 @@ export class ShareTimeLockHelper {
         staker = new Staker(fromAddress.toHex());
 
         // updating the stakersTracker entity, to keep our stakerIDs always in sync...
-        let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
+        let stakersTracker = MerkleTreeDistributorHelper.loadStakersTracker();
 
         let stakers = stakersTracker.stakers;
         stakers.push(fromAddress.toHexString());
@@ -43,8 +43,15 @@ export class ShareTimeLockHelper {
     
       // refilling the staked entity...
       staker.accountVeTokenBalance = stakingData.accountVeTokenBalance;
+      
+      // this property is deprecated, we now calculate it directly 
+      // on frontend using the merkleTree json file...
       staker.accountWithdrawableRewards = stakingData.accountWithdrawableRewards;
-      staker.accountWithdrawnRewards = stakingData.accountWithdrawnRewards;
+
+      // this property is not coming from the staking contract anymore,
+      // so we need to pass it as parameter and update it accordingly... 
+      staker.accountWithdrawnRewards = stakingData.accountWithdrawnRewards.plus(accountWithdrawnRewards);
+
       staker.save();
       
       return <Staker>staker;
@@ -158,7 +165,7 @@ export class ShareTimeLockHelper {
     let veDoughContract = NonTransferableRewardsOwned.bind(veDoughAddress);
     stats.veTokenTotalSupply = veDoughContract.totalSupply();
 
-    let stakersTracker = NonTransferableRewardsOwnedHelper.loadStakersTracker();
+    let stakersTracker = MerkleTreeDistributorHelper.loadStakersTracker();
     stats.stakersCounter = stakersTracker.counter;
 
     stats.timestamp = timestamp;

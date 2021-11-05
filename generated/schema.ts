@@ -449,6 +449,33 @@ export class Reward extends Entity {
     this.set("staker", Value.fromString(value));
   }
 
+  get rewardToken(): Bytes {
+    let value = this.get("rewardToken");
+    return value.toBytes();
+  }
+
+  set rewardToken(value: Bytes) {
+    this.set("rewardToken", Value.fromBytes(value));
+  }
+
+  get windowIndex(): BigInt {
+    let value = this.get("windowIndex");
+    return value.toBigInt();
+  }
+
+  set windowIndex(value: BigInt) {
+    this.set("windowIndex", Value.fromBigInt(value));
+  }
+
+  get accountIndex(): BigInt {
+    let value = this.get("accountIndex");
+    return value.toBigInt();
+  }
+
+  set accountIndex(value: BigInt) {
+    this.set("accountIndex", Value.fromBigInt(value));
+  }
+
   get type(): string {
     let value = this.get("type");
     return value.toString();
@@ -456,6 +483,100 @@ export class Reward extends Entity {
 
   set type(value: string) {
     this.set("type", Value.fromString(value));
+  }
+}
+
+export class RewardDistribution extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save RewardDistribution entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save RewardDistribution entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("RewardDistribution", id.toString(), this);
+  }
+
+  static load(id: string): RewardDistribution | null {
+    return store.get("RewardDistribution", id) as RewardDistribution | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get transaction(): string {
+    let value = this.get("transaction");
+    return value.toString();
+  }
+
+  set transaction(value: string) {
+    this.set("transaction", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get block(): BigInt {
+    let value = this.get("block");
+    return value.toBigInt();
+  }
+
+  set block(value: BigInt) {
+    this.set("block", Value.fromBigInt(value));
+  }
+
+  get windowIndex(): BigInt {
+    let value = this.get("windowIndex");
+    return value.toBigInt();
+  }
+
+  set windowIndex(value: BigInt) {
+    this.set("windowIndex", Value.fromBigInt(value));
+  }
+
+  get rewardsDeposited(): BigInt {
+    let value = this.get("rewardsDeposited");
+    return value.toBigInt();
+  }
+
+  set rewardsDeposited(value: BigInt) {
+    this.set("rewardsDeposited", Value.fromBigInt(value));
+  }
+
+  get rewardToken(): Bytes {
+    let value = this.get("rewardToken");
+    return value.toBytes();
+  }
+
+  set rewardToken(value: Bytes) {
+    this.set("rewardToken", Value.fromBytes(value));
+  }
+
+  get owner(): Bytes {
+    let value = this.get("owner");
+    return value.toBytes();
+  }
+
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
   }
 }
 
