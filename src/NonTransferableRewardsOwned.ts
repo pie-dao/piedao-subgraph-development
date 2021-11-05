@@ -10,45 +10,48 @@ import {
   RoleRevoked,
   Transfer
 } from "../generated/NonTransferableRewardsOwned/NonTransferableRewardsOwned"
-import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
 import { ShareTimeLockHelper } from "../helpers/ShareTimeLockHelper"
-import { Address, log } from "@graphprotocol/graph-ts"
+// import { NonTransferableRewardsOwnedHelper } from "../helpers/NonTransferableRewardsOwned"
+// import { Address, log } from "@graphprotocol/graph-ts"
 
 export function handleRewardsWithdrawn(event: RewardsWithdrawn): void {
-  NonTransferableRewardsOwnedHelper.saveRewards(
-    event.transaction.hash.toHex(), 
-    event.block.timestamp, 
-    event.params.fundsWithdrawn,
-    event.params.by.toHex(),
-    "claimed");
+  // deprecated, in favor of MerkleTreeDistributor...
+  // NonTransferableRewardsOwnedHelper.saveRewards(
+  //   event.transaction.hash.toHex(), 
+  //   event.block.timestamp, 
+  //   event.params.fundsWithdrawn,
+  //   event.params.by.toHex(),
+  //   "claimed");
 
-    ShareTimeLockHelper.updateStakingData(event.params.by);
+  //   ShareTimeLockHelper.updateStakingData(event.params.by);
 }
 
 export function handleRewardsRedistributed(event: RewardsRedistributed): void {
-  NonTransferableRewardsOwnedHelper.saveRewards(
-    event.transaction.hash.toHex(), 
-    event.block.timestamp, 
-    event.params.amount,
-    event.params.account.toHex(),
-    "slashed");  
+  // deprecated, in favor of MerkleTreeDistributor...
+  // NonTransferableRewardsOwnedHelper.saveRewards(
+  //   event.transaction.hash.toHex(), 
+  //   event.block.timestamp, 
+  //   event.params.amount,
+  //   event.params.account.toHex(),
+  //   "slashed");  
 
-    NonTransferableRewardsOwnedHelper.updateAllStakingData();
+  //   NonTransferableRewardsOwnedHelper.updateAllStakingData();
 }
 
 export function handleRewardsDistributed(event: RewardsDistributed): void {
-  NonTransferableRewardsOwnedHelper.saveRewards(
-    event.transaction.hash.toHex(), 
-    event.block.timestamp, 
-    event.params.rewardsDistributed,
-    event.params.by.toHex(),
-    "distributed");
+  // deprecated, in favor of MerkleTreeDistributor...
+  // NonTransferableRewardsOwnedHelper.saveRewards(
+  //   event.transaction.hash.toHex(), 
+  //   event.block.timestamp, 
+  //   event.params.rewardsDistributed,
+  //   event.params.by.toHex(),
+  //   "distributed");
 
-    NonTransferableRewardsOwnedHelper.updateAllStakingData();
+  //   NonTransferableRewardsOwnedHelper.updateAllStakingData();
 }
 
 export function handleClaimedFor(event: ClaimedFor): void {
-  log.info("----- handleClaimedFor -----", []);
+  // deprecated, in favor of MerkleTreeDistributor...
 }
 
 export function handleApproval(event: Approval): void {}
