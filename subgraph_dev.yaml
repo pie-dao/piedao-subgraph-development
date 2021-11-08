@@ -145,11 +145,11 @@ dataSources:
       file: ./src/DoughStakingDelegateRegistry.ts
   - kind: ethereum/contract
     name: MerkleTreeDistributor
-    network: goerli
+    network: rinkeby
     source:
-      address: "0x8F5749c1dDDE022bB7444E74409Ce10398817DF0"
+      address: "0x046B9C3A8a02A802FBA7e61054B79E28E0928F01"
       abi: MerkleTreeDistributor
-      startBlock: 5796499
+      startBlock: 9606052
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
