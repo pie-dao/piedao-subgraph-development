@@ -4,7 +4,7 @@ import { NonTransferableRewardsOwned } from "../generated/NonTransferableRewards
 import { Staker, Lock, GlobalStat, LocksTracker, GlobalStatsTracker } from "../generated/schema"
 import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { MerkleTreeDistributorHelper } from "./MerkleTreeDistributorHelper"
-import { SharesTimeLock_Address, NonTransferableRewardsOwned_Address, Dough_Address } from '../config/contracts'
+import { SharesTimeLock_Address, NonTransferableRewardsOwned_Address, Dough_Address, Slice_Address } from '../config/contracts'
 
 const globalStatsID = "GlobalStatsID";
 const locksTrackerID = "LocksTrackerID";
@@ -12,7 +12,10 @@ const locksTrackerID = "LocksTrackerID";
 export class ShareTimeLockHelper {
   constructor() {}
 
-  static updateStakingData(fromAddress: Address, accountWithdrawnRewards: BigInt = BigInt.fromI32(0)): Staker {
+  static updateStakingData(
+    fromAddress: Address, 
+    accountWithdrawnRewards: BigInt = BigInt.fromI32(0),
+    rewardToken: Address = Address.fromString(Slice_Address)): Staker {
     // loading the contract, and calling the getStakingData function...
     let contractAddress = <Address> Address.fromHexString(SharesTimeLock_Address);
     let sharesTimeLock = SharesTimeLock.bind(contractAddress);
@@ -50,7 +53,9 @@ export class ShareTimeLockHelper {
 
       // this property is not coming from the staking contract anymore,
       // so we need to pass it as parameter and update it accordingly... 
-      staker.accountWithdrawnRewards = stakingData.accountWithdrawnRewards.plus(accountWithdrawnRewards);
+      if(rewardToken.toHex() == Slice_Address) {
+        staker.accountWithdrawnRewards = staker.accountWithdrawnRewards.plus(accountWithdrawnRewards);
+      }
 
       staker.save();
       

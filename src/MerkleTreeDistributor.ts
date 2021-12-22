@@ -25,7 +25,7 @@ export function handleClaimed(event: Claimed): void {
     event.params.windowIndex,
     event.params.accountIndex);
 
-    ShareTimeLockHelper.updateStakingData(event.params.account, event.params.amount);
+    ShareTimeLockHelper.updateStakingData(event.params.account, event.params.amount, event.params.rewardToken);
 }
 
 export function handleCreatedWindow(event: CreatedWindow): void {
